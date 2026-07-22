@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tenant Detail - TaskRio Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css">
+<link rel="stylesheet" href="/admin/static/tenant_detail.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
+        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+      </a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item" href="/admin">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="currentColor"/><rect x="6.5" y="4" width="3" height="10" rx="1" fill="currentColor"/><rect x="11" y="6" width="3" height="8" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="/admin/groups">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-2 1.6-3.3 3.5-3.3S9 11 9 13M9.8 13c0-1.6 1-2.6 2.4-2.6s2.3 1 2.3 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Groups
+      </a>
+      <a class="nav-item active" href="/admin/tenants">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5V4.8L8 2l5.5 2.8v8.7M6 13.5V9.5h4v4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M1.5 13.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Tenants
+      </a>
+      <a class="nav-item" href="/admin/dms">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 7.6c0 3-2.7 5.4-6 5.4-.8 0-1.6-.1-2.3-.4L2.5 13.7l.9-2.6C2.5 10.2 2 9 2 7.6c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        DMs
+      </a>
+      <a class="nav-item" href="/admin/analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12l-4.6 5.4v4.1L6.6 14V8.4L2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Demo Funnel
+      </a>
+      <a class="nav-item" href="/admin/suggestions">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.6 4.6 0 00-2.6 8.4c.5.4.9 1 .9 1.6h3.4c0-.6.4-1.2.9-1.6A4.6 4.6 0 008 1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Suggestions
+      </a>
+      <a class="nav-item" href="/admin/reminders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.3 4.3 0 00-4.3 4.3c0 2.2-.6 3.6-1.2 4.4h11c-.6-.8-1.2-2.2-1.2-4.4A4.3 4.3 0 008 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 13.3a1.5 1.5 0 002.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Reminders
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item logout" href="/admin/logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page">
+
+      <div>
+        <a href="/admin/tenants" class="back-link">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to Tenants
+        </a>
+      </div>
+
+      <header class="page-header">
+        <div>
+          <h1 id="tenant-name">Loading…</h1>
+          <div class="detail-meta">
+            <span class="id-chip" id="tenant-session-name"></span>
+            <span id="tenant-status-badge"></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="detail-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Pairing QR</h2>
+          </div>
+          <div class="panel-body">
+            <div class="qr-box" id="qr-box">
+              <div class="placeholder">Provision the session to generate a QR code.</div>
+            </div>
+            <div class="btn-row" style="margin-top:14px;">
+              <button class="btn btn-primary" id="provision-btn" onclick="provisionTenant(this)">Provision session</button>
+              <button class="btn btn-secondary" id="qr-refresh-btn" onclick="loadQr(this)" style="display:none;">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Refresh QR
+              </button>
+              <button class="btn btn-secondary" id="qr-download-btn" onclick="downloadQr()" style="display:none;">Download QR</button>
+              <button class="btn btn-secondary" id="retry-btn" onclick="retryTenant(this)" style="display:none;">Retry / re-pair</button>
+              <button class="btn btn-danger" id="cancel-provision-btn" onclick="cancelProvisioning(this)" style="display:none;">Cancel provisioning</button>
+            </div>
+            <div class="error-banner" id="error-banner"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Details</h2>
+          </div>
+          <div class="panel-body">
+            <div id="info-rows"></div>
+            <div class="btn-row" style="margin-top:14px;">
+              <button class="btn btn-secondary" onclick="refreshStatus(this)">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Refresh status
+              </button>
+              <button class="btn btn-danger" id="delete-btn" onclick="deleteTenant(this)">Delete tenant</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Webhook Config</h2>
+        </div>
+        <div class="panel-body">
+          <div class="info-row"><span>URL</span><span id="webhook-url" class="id-chip">—</span></div>
+          <label class="webhook-label" for="webhook-events">Events (one per line)</label>
+          <textarea id="webhook-events" class="webhook-textarea" rows="6" readonly></textarea>
+          <div class="btn-row" style="margin-top:14px;">
+            <button class="btn btn-secondary" id="webhook-edit-btn" onclick="toggleWebhookEdit()">Edit</button>
+            <button class="btn btn-primary" id="webhook-save-btn" onclick="saveWebhookEvents(this)" style="display:none;">Save</button>
+            <button class="btn btn-secondary" id="webhook-cancel-btn" onclick="cancelWebhookEdit()" style="display:none;">Cancel</button>
+          </div>
+          <div class="error-banner" id="webhook-error-banner"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">WhatsApp Groups</h2>
+          <button class="btn btn-secondary btn-sm" id="groups-refresh-btn" onclick="loadGroups(this)">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh groups
+          </button>
+        </div>
+        <div class="table-scroll">
+          <table class="table" style="min-width:560px;">
+            <thead>
+              <tr>
+                <th>Group</th>
+                <th>Members</th>
+                <th>Status</th>
+                <th class="ta-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="groups-list">
+              <tr><td colspan="4" class="empty-state">Pair the session to see its groups.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="error-banner" id="groups-error-banner"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Portal access</h2>
+        </div>
+        <div class="table-scroll">
+          <table class="table" style="min-width:460px;">
+            <thead>
+              <tr>
+                <th>Phone</th>
+                <th>Role</th>
+                <th class="ta-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-list">
+              <tr><td colspan="3" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-foot" style="flex-direction:column; align-items:stretch; gap:12px;">
+          <p class="panel-note" style="margin:0;">Phone numbers granted access to this tenant's self-service portal at <code>/tenant/login</code>.</p>
+          <div class="add-row plain">
+            <input type="text" class="form-input" id="member-phone-input" placeholder="+1 555 010 0000">
+            <select id="member-role-input" class="select">
+              <option value="owner">owner</option>
+              <option value="admin">admin</option>
+              <option value="member">member</option>
+            </select>
+            <button class="btn btn-primary" onclick="addMember(this)">Grant access</button>
+          </div>
+          <div class="error-banner" id="members-error-banner"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+    <script>
+        const TENANT_ID = {{ tenant_id | tojson }};
+        let pollTimer = null;
+        let lastStatus = null;
+        let currentQrDataUrl = null;
+
+        let webhookOriginalText = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTenant();
+            loadWebhookConfig();
+            loadMembers();
+        });
+
+        function statusBadge(status) {
+            const labels = {
+                active: 'Active', provisioning: 'Provisioning', pending: 'Pending',
+                disconnected: 'Disconnected', suspended: 'Suspended',
+            };
+            return `<span class="badge badge-${status}">${labels[status] || status}</span>`;
+        }
+
+        function showError(message) {
+            const el = document.getElementById('error-banner');
+            el.textContent = message;
+            el.style.display = message ? 'block' : 'none';
+        }
+
+        // Disables a button and swaps its label for a spinner + loadingText while
+        // `fn` runs, then always restores it — so a click gives immediate feedback
+        // instead of looking like nothing happened until the request resolves.
+        async function withLoading(btn, loadingText, fn) {
+            if (!btn) return fn();
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+            try {
+                return await fn();
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
+        }
+
+        async function loadTenant() {
+            try {
+                const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load tenant');
+                renderTenant(data.tenant);
+            } catch (error) {
+                console.error('Failed to load tenant:', error);
+                document.getElementById('tenant-name').textContent = 'Failed to load tenant';
+            }
+        }
+
+        function renderTenant(t) {
+            document.title = `${t.name} — Tenant Detail`;
+            document.getElementById('tenant-name').textContent = t.name;
+            document.getElementById('tenant-session-name').textContent = t.wa_session_name;
+            document.getElementById('tenant-status-badge').innerHTML = statusBadge(t.status);
+
+            document.getElementById('info-rows').innerHTML = `
+                <div class="info-row"><span>Number</span><span>${t.wa_msisdn || '—'}</span></div>
+                <div class="info-row"><span>Plan</span><span>${t.plan || '—'}</span></div>
+                <div class="info-row"><span>Internal / demo</span><span>${t.is_internal ? 'Yes' : 'No'}</span></div>
+                <div class="info-row"><span>Created</span><span>${formatDate(t.created_at)}</span></div>
+                <div class="info-row"><span>Activated</span><span>${formatDate(t.activated_at)}</span></div>
+            `;
+
+            const provisionBtn = document.getElementById('provision-btn');
+            const qrRefreshBtn = document.getElementById('qr-refresh-btn');
+            const qrDownloadBtn = document.getElementById('qr-download-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const cancelProvisionBtn = document.getElementById('cancel-provision-btn');
+
+            if (t.status === 'pending') {
+                provisionBtn.style.display = 'inline-flex';
+                qrRefreshBtn.style.display = 'none';
+                qrDownloadBtn.style.display = 'none';
+                retryBtn.style.display = 'none';
+                cancelProvisionBtn.style.display = 'none';
+                currentQrDataUrl = null;
+            } else if (t.status === 'provisioning') {
+                provisionBtn.style.display = 'none';
+                qrRefreshBtn.style.display = 'inline-flex';
+                retryBtn.style.display = 'none';
+                cancelProvisionBtn.style.display = 'inline-flex';
+                if (lastStatus !== 'provisioning') loadQr();
+                startPolling();
+            } else if (t.status === 'active') {
+                provisionBtn.style.display = 'none';
+                qrRefreshBtn.style.display = 'none';
+                qrDownloadBtn.style.display = 'none';
+                retryBtn.style.display = 'none';
+                cancelProvisionBtn.style.display = 'none';
+                stopPolling();
+                currentQrDataUrl = null;
+                document.getElementById('qr-box').innerHTML = '<div class="placeholder">✓ Paired and active — no QR needed.</div>';
+                if (lastStatus !== 'active') loadGroups();
+            } else {
+                // disconnected / suspended
+                provisionBtn.style.display = 'none';
+                qrRefreshBtn.style.display = 'none';
+                qrDownloadBtn.style.display = 'none';
+                retryBtn.style.display = 'inline-flex';
+                cancelProvisionBtn.style.display = 'none';
+                stopPolling();
+                currentQrDataUrl = null;
+                document.getElementById('qr-box').innerHTML = '<div class="placeholder">Session disconnected. Retry to get a new pairing QR.</div>';
+            }
+
+            lastStatus = t.status;
+        }
+
+        async function provisionTenant(btn) {
+            showError('');
+            await withLoading(btn, 'Provisioning…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/provision`, { method: 'POST' });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to provision session');
+                    renderTenant(data.tenant);
+                } catch (error) {
+                    console.error('Failed to provision tenant:', error);
+                    showError(error.message);
+                }
+            });
+        }
+
+        async function retryTenant(btn) {
+            showError('');
+            await withLoading(btn, 'Retrying…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/retry`, { method: 'POST' });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to retry session');
+                    await loadTenant();
+                } catch (error) {
+                    console.error('Failed to retry tenant:', error);
+                    showError(error.message);
+                }
+            });
+        }
+
+        async function cancelProvisioning(btn) {
+            if (!confirm('Cancel this provisioning attempt? The WAHA session will be stopped and this tenant reset to pending.')) return;
+            showError('');
+            await withLoading(btn, 'Cancelling…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/cancel`, { method: 'POST' });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to cancel provisioning');
+                    stopPolling();
+                    renderTenant(data.tenant);
+                } catch (error) {
+                    console.error('Failed to cancel provisioning:', error);
+                    showError(error.message);
+                }
+            });
+        }
+
+        async function loadQr(btn) {
+            const box = document.getElementById('qr-box');
+            const qrDownloadBtn = document.getElementById('qr-download-btn');
+            box.innerHTML = '<div class="placeholder">Loading QR…</div>';
+            qrDownloadBtn.style.display = 'none';
+            currentQrDataUrl = null;
+            await withLoading(btn, 'Loading…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/qr`);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to load QR');
+                    currentQrDataUrl = `data:${data.mimetype};base64,${data.data}`;
+                    box.innerHTML = `<img src="${currentQrDataUrl}" alt="Pairing QR code">`;
+                    qrDownloadBtn.style.display = 'inline-flex';
+                } catch (error) {
+                    console.error('Failed to load QR:', error);
+                    box.innerHTML = '<div class="placeholder">QR not ready yet — try refreshing in a moment.</div>';
+                }
+            });
+        }
+
+        function downloadQr() {
+            if (!currentQrDataUrl) return;
+            const ext = (currentQrDataUrl.match(/^data:image\/(\w+);/) || [, 'png'])[1];
+            const link = document.createElement('a');
+            link.href = currentQrDataUrl;
+            link.download = `taskrio-qr-${TENANT_ID}.${ext}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        async function refreshStatus(btn) {
+            showError('');
+            await withLoading(btn, 'Refreshing…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/status`);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to fetch live status');
+                    // sync_tenant_status_from_live already persisted any change; reload our row.
+                    await loadTenant();
+                } catch (error) {
+                    console.error('Failed to refresh status:', error);
+                    showError(error.message);
+                }
+            });
+        }
+
+        async function deleteTenant(btn) {
+            if (!confirm('Delete this tenant and tear down its WAHA session? This only works for tenants with no linked tasks/messages yet.')) return;
+            showError('');
+            await withLoading(btn, 'Deleting…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}`, { method: 'DELETE' });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to delete tenant');
+                    stopPolling();
+                    window.location.href = '/admin/tenants';
+                } catch (error) {
+                    console.error('Failed to delete tenant:', error);
+                    showError(error.message);
+                }
+            });
+        }
+
+        function showWebhookError(message) {
+            const el = document.getElementById('webhook-error-banner');
+            el.textContent = message;
+            el.style.display = message ? 'block' : 'none';
+        }
+
+        async function loadWebhookConfig() {
+            const urlEl = document.getElementById('webhook-url');
+            const textarea = document.getElementById('webhook-events');
+            try {
+                const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/webhook-config`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load webhook config');
+                urlEl.textContent = data.url || '—';
+                webhookOriginalText = (data.events || []).join('\n');
+                textarea.value = webhookOriginalText;
+            } catch (error) {
+                console.error('Failed to load webhook config:', error);
+                urlEl.textContent = '—';
+                webhookOriginalText = '';
+                textarea.value = '';
+                textarea.placeholder = 'No webhook configured yet — provision the session first.';
+            }
+        }
+
+        function toggleWebhookEdit() {
+            const textarea = document.getElementById('webhook-events');
+            textarea.readOnly = false;
+            textarea.focus();
+            document.getElementById('webhook-edit-btn').style.display = 'none';
+            document.getElementById('webhook-save-btn').style.display = 'inline-flex';
+            document.getElementById('webhook-cancel-btn').style.display = 'inline-flex';
+        }
+
+        function cancelWebhookEdit() {
+            const textarea = document.getElementById('webhook-events');
+            textarea.value = webhookOriginalText;
+            textarea.readOnly = true;
+            showWebhookError('');
+            document.getElementById('webhook-edit-btn').style.display = 'inline-flex';
+            document.getElementById('webhook-save-btn').style.display = 'none';
+            document.getElementById('webhook-cancel-btn').style.display = 'none';
+        }
+
+        async function saveWebhookEvents(btn) {
+            showWebhookError('');
+            const textarea = document.getElementById('webhook-events');
+            const events = textarea.value.split('\n').map(s => s.trim()).filter(Boolean);
+            if (!events.length) {
+                showWebhookError('Events list cannot be empty.');
+                return;
+            }
+            await withLoading(btn, 'Saving…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/webhook-config`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ events }),
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to save webhook config');
+                    webhookOriginalText = events.join('\n');
+                    textarea.readOnly = true;
+                    document.getElementById('webhook-edit-btn').style.display = 'inline-flex';
+                    document.getElementById('webhook-save-btn').style.display = 'none';
+                    document.getElementById('webhook-cancel-btn').style.display = 'none';
+                } catch (error) {
+                    console.error('Failed to save webhook config:', error);
+                    showWebhookError(error.message);
+                }
+            });
+        }
+
+        function groupStatusBadge(status) {
+            const map = {
+                approved: '<span class="badge badge-approved">Approved</span>',
+                rejected: '<span class="badge badge-rejected">Rejected</span>',
+                pending: '<span class="badge badge-pending">Pending</span>',
+            };
+            return map[status] || map.pending;
+        }
+
+        function groupRow(g) {
+            let actions = '';
+            if (g.status !== 'approved') {
+                actions += `<button class="btn btn-approve btn-sm" onclick="approveGroup('${g.id}', this)">Approve</button>`;
+            }
+            if (g.status !== 'rejected') {
+                actions += `<button class="btn btn-reject btn-sm" onclick="rejectGroup('${g.id}', this)">Reject</button>`;
+            }
+            return `
+                <tr>
+                    <td><span class="fw-600">${g.name}</span><br><span class="id-chip">${g.id}</span></td>
+                    <td class="muted">${g.size != null ? g.size + ' members' : '—'}</td>
+                    <td>${groupStatusBadge(g.status)}</td>
+                    <td class="ta-right"><div class="action-row">${actions}</div></td>
+                </tr>
+            `;
+        }
+
+        async function approveGroup(groupId, btn) {
+            showGroupsError('');
+            await withLoading(btn, 'Approving…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/groups/${encodeURIComponent(groupId)}/approve`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({}),
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to approve group');
+                    await loadGroups();
+                } catch (error) {
+                    console.error('Failed to approve group:', error);
+                    showGroupsError(error.message);
+                }
+            });
+        }
+
+        async function rejectGroup(groupId, btn) {
+            showGroupsError('');
+            await withLoading(btn, 'Rejecting…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/groups/${encodeURIComponent(groupId)}/reject`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({}),
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to reject group');
+                    await loadGroups();
+                } catch (error) {
+                    console.error('Failed to reject group:', error);
+                    showGroupsError(error.message);
+                }
+            });
+        }
+
+        function showGroupsError(message) {
+            const el = document.getElementById('groups-error-banner');
+            el.textContent = message;
+            el.style.display = message ? 'block' : 'none';
+        }
+
+        async function loadGroups(btn) {
+            const list = document.getElementById('groups-list');
+            showGroupsError('');
+            await withLoading(btn, 'Loading…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/groups`);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to load groups');
+                    if (!data.groups.length) {
+                        list.innerHTML = '<tr><td colspan="4" class="empty-state">This number isn\'t a member of any WhatsApp groups yet.</td></tr>';
+                        return;
+                    }
+                    list.innerHTML = data.groups.map(g => groupRow(g)).join('');
+                } catch (error) {
+                    console.error('Failed to load groups:', error);
+                    showGroupsError(error.message);
+                }
+            });
+        }
+
+        function startPolling() {
+            if (pollTimer) return;
+            pollTimer = setInterval(loadTenant, 3000);
+        }
+
+        function stopPolling() {
+            if (pollTimer) {
+                clearInterval(pollTimer);
+                pollTimer = null;
+            }
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            const date = new Date(dateStr);
+            return date.toLocaleString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        function showMembersError(message) {
+            const el = document.getElementById('members-error-banner');
+            el.textContent = message;
+            el.style.display = message ? 'block' : 'none';
+        }
+
+        function memberRow(m) {
+            return `
+                <tr>
+                    <td class="fw-600">${m.phone}</td>
+                    <td class="muted">${m.role}</td>
+                    <td class="ta-right"><button class="btn btn-reject btn-sm" onclick="removeMember('${m.phone}', this)">Revoke</button></td>
+                </tr>
+            `;
+        }
+
+        async function loadMembers(btn) {
+            const list = document.getElementById('members-list');
+            showMembersError('');
+            await withLoading(btn, 'Loading…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/members`);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to load members');
+                    if (!data.members.length) {
+                        list.innerHTML = '<tr><td colspan="3" class="empty-state">No phone numbers have portal access yet.</td></tr>';
+                        return;
+                    }
+                    list.innerHTML = data.members.map(m => memberRow(m)).join('');
+                } catch (error) {
+                    console.error('Failed to load members:', error);
+                    showMembersError(error.message);
+                }
+            });
+        }
+
+        async function addMember(btn) {
+            showMembersError('');
+            const phoneInput = document.getElementById('member-phone-input');
+            const roleInput = document.getElementById('member-role-input');
+            const phone = phoneInput.value.trim();
+            if (!phone) {
+                showMembersError('Enter a phone number first.');
+                return;
+            }
+            await withLoading(btn, 'Adding…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/members`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, role: roleInput.value }),
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to grant access');
+                    phoneInput.value = '';
+                    await loadMembers();
+                } catch (error) {
+                    console.error('Failed to add member:', error);
+                    showMembersError(error.message);
+                }
+            });
+        }
+
+        async function removeMember(phone, btn) {
+            if (!confirm(`Revoke portal access for ${phone}?`)) return;
+            showMembersError('');
+            await withLoading(btn, 'Revoking…', async () => {
+                try {
+                    const response = await fetch(`/admin/tenants/${encodeURIComponent(TENANT_ID)}/members/${encodeURIComponent(phone)}`, {
+                        method: 'DELETE',
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to revoke access');
+                    await loadMembers();
+                } catch (error) {
+                    console.error('Failed to remove member:', error);
+                    showMembersError(error.message);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

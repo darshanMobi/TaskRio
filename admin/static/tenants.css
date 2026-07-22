@@ -1,0 +1,19 @@
+/* TaskRio Admin — Tenants page specific styles */
+/* (base styles live in admin.css) */
+
+/* Name cell with internal badge */
+.name-cell { display: flex; align-items: center; gap: 8px; }
+
+/* Columns share the table width evenly rather than sizing to a fixed px total,
+   so dropping/adding a column reflows the rest instead of leaving dead space. */
+.table-fixed { table-layout: auto; width: 100%; }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .search-box { width: 100%; }
+  .filter-row { width: 100%; }
+  .filter-row .select { flex: 1; }
+  .table th, .table td { padding: 10px 10px; }
+  .table th:first-child, .table td:first-child { padding-left: 12px; }
+  .table th:last-child, .table td:last-child { padding-right: 12px; }
+}

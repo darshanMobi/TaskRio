@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 3 http://localhost:8787/dashboard.html)",
+      "Bash(ls \"/c/Users/HP23/AppData/Local/Temp/claude/c--Users-HP23-Desktop-admin-templates/a440a16c-0f1d-4ad4-ba0c-d60395215071/scratchpad/preview/mock_server.py\" 2>&1)",
+      "Read(//c/Users/HP23/AppData/Local/Temp/claude/c--Users-HP23-Desktop-admin-templates/a440a16c-0f1d-4ad4-ba0c-d60395215071/scratchpad/preview/**)",
+      "Bash(python mock_server.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8787/dashboard.html)",
+      "Bash(python -c \"import fastapi, uvicorn; print\\('ok'\\)\")"
+    ]
+  }
+}

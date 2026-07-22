@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tenant Login - TaskRio</title>
+    <style>
+        body {
+            font-family: system-ui, Arial;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.75rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        input[type="tel"], input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+        button:active { transform: translateY(0); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            text-align: center;
+            display: none;
+        }
+        .info {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .resend {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .resend a { color: #667eea; font-size: 0.8rem; cursor: pointer; text-decoration: none; }
+        .resend a:hover { text-decoration: underline; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>👋 TaskRio</h1>
+        <p class="subtitle">Sign in with the WhatsApp number registered to your account</p>
+
+        <div class="error" id="error-banner"></div>
+
+        <form id="phone-form">
+            <div class="form-group">
+                <label for="phone">WhatsApp number</label>
+                <input type="tel" id="phone" name="phone" placeholder="+1 555 123 4567" required autofocus>
+            </div>
+            <button type="submit" id="phone-submit">Send code</button>
+        </form>
+
+        <form id="otp-form" class="hidden">
+            <div class="form-group">
+                <label for="otp_code">6-digit code</label>
+                <input type="text" id="otp_code" name="otp_code" inputmode="numeric" maxlength="6" required autofocus>
+            </div>
+            <button type="submit" id="otp-submit">Verify &amp; sign in</button>
+            <div class="resend"><a id="resend-link">Use a different number</a></div>
+        </form>
+
+        <p class="info">Only phone numbers registered as tenant members can sign in here.</p>
+    </div>
+
+    <script>
+        let phone = '';
+
+        const phoneForm = document.getElementById('phone-form');
+        const otpForm = document.getElementById('otp-form');
+        const errorBanner = document.getElementById('error-banner');
+
+        function showError(message) {
+            errorBanner.textContent = message;
+            errorBanner.style.display = message ? 'block' : 'none';
+        }
+
+        phoneForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showError('');
+            phone = document.getElementById('phone').value.trim();
+            const submitBtn = document.getElementById('phone-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending…';
+            try {
+                const response = await fetch('/tenant/login/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone }),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error((data.detail && data.detail.message) || data.detail || 'Failed to send code');
+                phoneForm.classList.add('hidden');
+                otpForm.classList.remove('hidden');
+                document.getElementById('otp_code').focus();
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send code';
+            }
+        });
+
+        otpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showError('');
+            const otp_code = document.getElementById('otp_code').value.trim();
+            const submitBtn = document.getElementById('otp-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying…';
+            try {
+                const response = await fetch('/tenant/login/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, otp_code }),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error((data.detail && data.detail.message) || data.detail || 'Invalid code');
+                window.location.href = data.redirect || '/tenant';
+            } catch (error) {
+                showError(error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify & sign in';
+            }
+        });
+
+        document.getElementById('resend-link').addEventListener('click', () => {
+            showError('');
+            otpForm.classList.add('hidden');
+            phoneForm.classList.remove('hidden');
+            document.getElementById('phone').focus();
+        });
+    </script>
+</body>
+</html>

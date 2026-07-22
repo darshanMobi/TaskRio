@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Group Detail - TaskRio Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css">
+<link rel="stylesheet" href="/admin/static/group_detail.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
+        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+      </a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item" href="/admin">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="currentColor"/><rect x="6.5" y="4" width="3" height="10" rx="1" fill="currentColor"/><rect x="11" y="6" width="3" height="8" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="/admin/groups">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-2 1.6-3.3 3.5-3.3S9 11 9 13M9.8 13c0-1.6 1-2.6 2.4-2.6s2.3 1 2.3 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Groups
+      </a>
+      <a class="nav-item" href="/admin/tenants">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5V4.8L8 2l5.5 2.8v8.7M6 13.5V9.5h4v4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M1.5 13.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Tenants
+      </a>
+      <a class="nav-item" href="/admin/dms">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 7.6c0 3-2.7 5.4-6 5.4-.8 0-1.6-.1-2.3-.4L2.5 13.7l.9-2.6C2.5 10.2 2 9 2 7.6c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        DMs
+      </a>
+      <a class="nav-item" href="/admin/analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12l-4.6 5.4v4.1L6.6 14V8.4L2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Demo Funnel
+      </a>
+      <a class="nav-item" href="/admin/suggestions">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.6 4.6 0 00-2.6 8.4c.5.4.9 1 .9 1.6h3.4c0-.6.4-1.2.9-1.6A4.6 4.6 0 008 1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Suggestions
+      </a>
+      <a class="nav-item" href="/admin/reminders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.3 4.3 0 00-4.3 4.3c0 2.2-.6 3.6-1.2 4.4h11c-.6-.8-1.2-2.2-1.2-4.4A4.3 4.3 0 008 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 13.3a1.5 1.5 0 002.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Reminders
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item logout" href="/admin/logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page">
+
+      <div>
+        <a href="/admin/groups" class="back-link">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to Groups
+        </a>
+      </div>
+
+      <header class="page-header">
+        <div>
+          <h1 id="group-name">Loading…</h1>
+          <div class="detail-meta">
+            <span class="id-chip" id="group-id"></span>
+            <span id="status-badge"></span>
+          </div>
+        </div>
+        <div class="btn-row" id="action-buttons"></div>
+      </header>
+
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card accent-green">
+          <span class="stat-label">Total Messages</span>
+          <div class="stat-value" id="message-count">0</div>
+        </div>
+        <div class="stat-card accent-violet">
+          <span class="stat-label">Last Activity</span>
+          <div class="stat-value" id="last-activity" style="font-size:20px;">—</div>
+        </div>
+        <div class="stat-card accent-teal" id="inviter-card" style="display:none;">
+          <span class="stat-label">Invited By</span>
+          <div class="stat-value" id="invited-by" style="font-size:20px;">—</div>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Task-creation permissions</h2>
+        </div>
+        <div class="panel-body">
+          <div id="members-list"><div class="empty-state">Loading…</div></div>
+          <div class="error-banner" id="members-error"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Recent messages</h2>
+          <span class="panel-note">Last 100, most recent first</span>
+        </div>
+        <div class="panel-body">
+          <div class="messages-list" id="messages-list">
+            <div class="empty-state">Loading messages…</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('id');
+
+    if (!groupId) {
+        document.querySelector('.page').innerHTML = '<div class="empty-state">No group ID provided</div>';
+    } else {
+        loadGroupDetails();
+        loadMembers();
+    }
+
+    async function withLoading(btn, loadingText, fn) {
+        if (!btn) return fn();
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+        try {
+            return await fn();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+
+    function showMembersError(message) {
+        const el = document.getElementById('members-error');
+        el.textContent = message;
+        el.style.display = message ? 'block' : 'none';
+    }
+
+    function memberRow(m) {
+        const action = m.blocked
+            ? `<button class="btn btn-secondary btn-sm" onclick="unblockMember('${m.wa_id}', this)">Unblock</button>`
+            : `<button class="btn btn-reject btn-sm" onclick="blockMember('${m.wa_id}', this)">Block</button>`;
+        const status = m.blocked
+            ? '<span class="badge badge-blocked">Blocked</span>'
+            : '<span class="badge badge-active">Allowed</span>';
+        const phone = m.wa_id.split('@')[0];
+        return `
+            <div class="member-row">
+                <div>
+                    <div class="member-name">${m.name}</div>
+                    <div class="member-phone">${phone}</div>
+                </div>
+                <div class="member-actions">${status}${action}</div>
+            </div>
+        `;
+    }
+
+    async function loadMembers() {
+        const list = document.getElementById('members-list');
+        showMembersError('');
+        try {
+            const response = await fetch(`/admin/groups/${encodeURIComponent(groupId)}/members`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || 'Failed to load members');
+            if (!data.members.length) {
+                list.innerHTML = '<div class="empty-state">No participants found for this group.</div>';
+                return;
+            }
+            list.innerHTML = data.members.map(m => memberRow(m)).join('');
+        } catch (error) {
+            showMembersError(error.message);
+        }
+    }
+
+    async function blockMember(waId, btn) {
+        showMembersError('');
+        await withLoading(btn, 'Blocking…', async () => {
+            try {
+                const response = await fetch(`/admin/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(waId)}/block`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to block member');
+                await loadMembers();
+            } catch (error) {
+                showMembersError(error.message);
+            }
+        });
+    }
+
+    async function unblockMember(waId, btn) {
+        showMembersError('');
+        await withLoading(btn, 'Unblocking…', async () => {
+            try {
+                const response = await fetch(`/admin/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(waId)}/unblock`, {
+                    method: 'POST',
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to unblock member');
+                await loadMembers();
+            } catch (error) {
+                showMembersError(error.message);
+            }
+        });
+    }
+
+    function statusBadge(data) {
+        if (data.status === 'unapproved') return '<span class="badge badge-unapproved">Unapproved</span>';
+        if (data.status === 'rejected') return '<span class="badge badge-rejected">Rejected</span>';
+        if (data.is_active) return '<span class="badge badge-active">Active</span>';
+        return '<span class="badge badge-inactive">Inactive</span>';
+    }
+
+    async function loadGroupDetails() {
+        try {
+            const response = await fetch(`/admin/group-detail/${encodeURIComponent(groupId)}`);
+            if (!response.ok) throw new Error('Failed to load group details');
+
+            const data = await response.json();
+
+            document.title = `${data.group_name || 'Unknown Group'} — Group Detail`;
+            document.getElementById('group-name').textContent = data.group_name || 'Unknown Group';
+            document.getElementById('group-id').textContent = groupId;
+            document.getElementById('status-badge').innerHTML = statusBadge(data);
+
+            document.getElementById('message-count').textContent = data.message_count;
+            document.getElementById('last-activity').textContent = formatDate(data.last_activity);
+
+            if (data.invited_by) {
+                document.getElementById('invited-by').textContent = data.invited_by;
+                document.getElementById('inviter-card').style.display = 'flex';
+            }
+
+            const actionsDiv = document.getElementById('action-buttons');
+            if (data.status === 'unapproved') {
+                actionsDiv.innerHTML = `
+                    <button class="btn btn-approve" onclick="approveGroup(this)">Approve group</button>
+                    <button class="btn btn-reject" onclick="rejectGroup(this)">Reject group</button>
+                `;
+            } else if (data.status === 'rejected') {
+                actionsDiv.innerHTML = `
+                    <button class="btn btn-secondary" onclick="unrejectGroup(this)">Unreject (move to unapproved)</button>
+                `;
+            } else if (data.is_active) {
+                actionsDiv.innerHTML = `
+                    <button class="btn btn-danger" onclick="deactivateGroup(this)">Deactivate</button>
+                `;
+            } else {
+                actionsDiv.innerHTML = `
+                    <button class="btn btn-primary" onclick="activateGroup(this)">Activate</button>
+                `;
+            }
+
+            const messagesList = document.getElementById('messages-list');
+            if (!data.messages || !data.messages.length) {
+                messagesList.innerHTML = '<div class="empty-state">No messages found</div>';
+            } else {
+                messagesList.innerHTML = data.messages.map(msg => `
+                    <div class="message-row">
+                        <div class="message-row-head">
+                            <span class="message-row-sender">${msg.sender || 'Unknown'}</span>
+                            <span class="message-row-time">${formatDate(msg.timestamp)}</span>
+                        </div>
+                        <div class="message-row-text">${escapeHtml(msg.text || '(No text)')}</div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Failed to load group details:', error);
+            document.getElementById('messages-list').innerHTML =
+                '<div class="empty-state" style="color:#c93b3b;">Failed to load group details</div>';
+        }
+    }
+
+    async function approveGroup(btn) {
+        await withLoading(btn, 'Approving…', async () => {
+            try {
+                const response = await fetch('/admin/approved-groups', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        group_id: groupId,
+                        group_name: document.getElementById('group-name').textContent,
+                        added_by: 'admin',
+                        notes: 'Approved from group detail page'
+                    })
+                });
+                if (!response.ok) throw new Error('Failed to approve group');
+                window.location.href = '/admin/groups';
+            } catch (error) {
+                console.error('Failed to approve group:', error);
+                alert('Failed to approve group');
+            }
+        });
+    }
+
+    async function rejectGroup(btn) {
+        await withLoading(btn, 'Rejecting…', async () => {
+            try {
+                const response = await fetch('/admin/rejected-groups', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        group_id: groupId,
+                        group_name: document.getElementById('group-name').textContent,
+                        added_by: 'admin',
+                        notes: 'Rejected from group detail page'
+                    })
+                });
+                if (!response.ok) throw new Error('Failed to reject group');
+                window.location.href = '/admin/groups';
+            } catch (error) {
+                console.error('Failed to reject group:', error);
+                alert('Failed to reject group');
+            }
+        });
+    }
+
+    async function unrejectGroup(btn) {
+        await withLoading(btn, 'Reverting…', async () => {
+            try {
+                const response = await fetch(`/admin/rejected-groups/${encodeURIComponent(groupId)}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to unreject group');
+                window.location.href = '/admin/groups';
+            } catch (error) {
+                console.error('Failed to unreject group:', error);
+                alert('Failed to unreject group');
+            }
+        });
+    }
+
+    async function activateGroup(btn) {
+        await toggleGroupStatus(true, btn);
+    }
+
+    async function deactivateGroup(btn) {
+        await toggleGroupStatus(false, btn);
+    }
+
+    async function toggleGroupStatus(activate, btn) {
+        await withLoading(btn, activate ? 'Activating…' : 'Deactivating…', async () => {
+            try {
+                const url = activate
+                    ? `/admin/approved-groups/${encodeURIComponent(groupId)}/activate`
+                    : `/admin/approved-groups/${encodeURIComponent(groupId)}`;
+
+                const response = await fetch(url, {
+                    method: activate ? 'POST' : 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to toggle group status');
+                window.location.href = '/admin/groups';
+            } catch (error) {
+                console.error('Failed to toggle group status:', error);
+                alert('Failed to toggle group status');
+            }
+        });
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '—';
+        const date = new Date(dateStr);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+</body>
+</html>

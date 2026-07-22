@@ -1,0 +1,44 @@
+{% extends "tenant_portal/base.html" %}
+{% block title %}Dashboard - TaskRio{% endblock %}
+{% block content %}
+    <h1>{{ tenant.name or 'Your account' }}</h1>
+    <div style="margin-top:0.5rem;">
+        {% set status = tenant.status or 'pending' %}
+        <span class="badge badge-{{ status }}">{{ status | capitalize }}</span>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h2>WhatsApp connection</h2>
+            <div class="info-row"><span>Number</span><span>{{ tenant.wa_msisdn or '—' }}</span></div>
+            <div class="info-row"><span>Plan</span><span>{{ tenant.plan or '—' }}</span></div>
+            <div class="btn-row">
+                <a class="btn btn-primary" href="/tenant/whatsapp">Manage WhatsApp connection</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Group requests</h2>
+            <p style="color:#374151; font-size:0.9rem; margin:0 0 1rem;">
+                {% if pending_count %}
+                    <strong>{{ pending_count }}</strong> group invite{{ 's' if pending_count != 1 else '' }} awaiting your approval.
+                {% else %}
+                    No pending group invites right now.
+                {% endif %}
+            </p>
+            <div class="btn-row">
+                <a class="btn btn-primary" href="/tenant/groups">Review groups</a>
+            </div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Direct messages</h2>
+            <p style="color:#374151; font-size:0.9rem; margin:0 0 1rem;">
+                See and reply to people messaging your TaskRio number directly.
+            </p>
+            <div class="btn-row">
+                <a class="btn btn-primary" href="/tenant/dms">Open DM inbox</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

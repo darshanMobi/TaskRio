@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tenants - TaskRio Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css">
+<link rel="stylesheet" href="/admin/static/tenants.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
+        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+      </a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item" href="/admin">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="currentColor"/><rect x="6.5" y="4" width="3" height="10" rx="1" fill="currentColor"/><rect x="11" y="6" width="3" height="8" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="/admin/groups">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-2 1.6-3.3 3.5-3.3S9 11 9 13M9.8 13c0-1.6 1-2.6 2.4-2.6s2.3 1 2.3 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Groups
+      </a>
+      <a class="nav-item active" href="/admin/tenants">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5V4.8L8 2l5.5 2.8v8.7M6 13.5V9.5h4v4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M1.5 13.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Tenants
+      </a>
+      <a class="nav-item" href="/admin/dms">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 7.6c0 3-2.7 5.4-6 5.4-.8 0-1.6-.1-2.3-.4L2.5 13.7l.9-2.6C2.5 10.2 2 9 2 7.6c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        DMs
+      </a>
+      <a class="nav-item" href="/admin/analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12l-4.6 5.4v4.1L6.6 14V8.4L2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Demo Funnel
+      </a>
+      <a class="nav-item" href="/admin/suggestions">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.6 4.6 0 00-2.6 8.4c.5.4.9 1 .9 1.6h3.4c0-.6.4-1.2.9-1.6A4.6 4.6 0 008 1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Suggestions
+      </a>
+      <a class="nav-item" href="/admin/reminders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.3 4.3 0 00-4.3 4.3c0 2.2-.6 3.6-1.2 4.4h11c-.6-.8-1.2-2.2-1.2-4.4A4.3 4.3 0 008 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 13.3a1.5 1.5 0 002.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Reminders
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item logout" href="/admin/logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page">
+
+      <header class="page-header">
+        <div>
+          <h1>Tenant Management</h1>
+          <p style="max-width:640px;">Each tenant is a client's dedicated WhatsApp number, run as its own WAHA session. Create the tenant, then provision the session and hand the client the pairing QR.</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="showAddModal()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            New Tenant
+          </button>
+          <button class="btn btn-secondary" onclick="loadTenants(this)">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+          <button class="btn btn-secondary" onclick="syncAllWebhooks(this)">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5.8 8.2a2.8 2.8 0 004 .3l1.7-1.7a2.8 2.8 0 00-4-4l-1 1M8.2 5.8a2.8 2.8 0 00-4-.3L2.5 7.2a2.8 2.8 0 004 4l1-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Sync webhooks
+          </button>
+        </div>
+      </header>
+
+      <div class="stat-grid four-col">
+        <div class="stat-card accent-indigo"><span class="stat-label">Total Tenants</span><div class="stat-value" id="stat-total">0</div></div>
+        <div class="stat-card accent-green"><span class="stat-label">Active</span><div class="stat-value" id="stat-active">0</div></div>
+        <div class="stat-card accent-amber"><span class="stat-label">Provisioning</span><div class="stat-value" id="stat-provisioning">0</div></div>
+        <div class="stat-card accent-red"><span class="stat-label">Disconnected</span><div class="stat-value" id="stat-disconnected">0</div></div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">All Tenants</h2>
+          <div class="filter-row">
+            <div class="search-box">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.4" stroke="#8a8f9e" stroke-width="1.5"/><path d="M9.4 9.4l3 3" stroke="#8a8f9e" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input id="tenant-search" placeholder="Search tenants…">
+            </div>
+            <select id="status-filter" class="select">
+              <option value="all">All statuses</option>
+              <option value="active">Active</option>
+              <option value="provisioning">Provisioning</option>
+              <option value="disconnected">Disconnected</option>
+              <option value="suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-scroll sticky-scroll">
+          <table class="table table-fixed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>WAHA Session</th>
+                <th>Number</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th class="ta-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tenants-tbody">
+              <tr><td colspan="6" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-foot">
+          <span id="result-label" class="panel-note"></span>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- New Tenant Modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal" id="modal-box">
+      <div class="modal-head">
+        <h3 class="modal-title">New Tenant</h3>
+        <button class="modal-close" id="close-modal">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 8m0-8l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <form id="add-form" onsubmit="createTenant(event)">
+        <div class="modal-body">
+          <label class="form-label">
+            Client Name *
+            <input type="text" class="form-input" id="tenant-name" placeholder="Acme Corp" required>
+          </label>
+          <label class="form-label">
+            WhatsApp Number
+            <input type="text" class="form-input" id="tenant-msisdn" placeholder="+1 555 0100 (optional, add once known)">
+          </label>
+          <label class="form-label">
+            Plan
+            <input type="text" class="form-input" id="tenant-plan" placeholder="private">
+          </label>
+          <label class="form-label">
+            Owner phone (tenant portal login)
+            <input type="text" class="form-input" id="tenant-owner-phone" placeholder="+1 555 010 0000 (optional, can add later)">
+          </label>
+          <label class="form-label checkbox-row">
+            <input type="checkbox" id="tenant-internal">
+            Internal / demo tenant
+          </label>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-secondary" id="cancel-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="create-tenant-btn">Create Tenant</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  loadTenants();
+  document.getElementById('tenant-search').addEventListener('input', () => { currentPage = 1; renderTenantsTable(); });
+  document.getElementById('status-filter').addEventListener('change', () => { currentPage = 1; renderTenantsTable(); });
+});
+
+let allTenants = [];
+let currentPage = 1;
+const PAGE_SIZE = 20;
+
+function viewTenantDetail(tenantId, event) {
+  window.location.href = `/admin/tenant/${encodeURIComponent(tenantId)}`;
+}
+
+function statusBadge(status) {
+  const labels = {
+    active: 'Active',
+    provisioning: 'Provisioning',
+    disconnected: 'Disconnected',
+    suspended: 'Suspended',
+  };
+  return `<span class="badge badge-${status}">${labels[status] || status}</span>`;
+}
+
+// Which action a tenant's current status allows, and how to render its button.
+const TENANT_ACTIONS = {
+  active: { action: 'deactivate', label: 'Deactivate', cls: 'btn-reject' },
+  provisioning: { action: 'deactivate', label: 'Deactivate', cls: 'btn-reject' },
+  disconnected: { action: 'activate', label: 'Activate', cls: 'btn-approve' },
+  suspended: { action: 'activate', label: 'Activate', cls: 'btn-approve' },
+};
+
+function actionButton(status, tenantId) {
+  const cfg = TENANT_ACTIONS[status];
+  if (!cfg) return '—';
+  return `<button class="btn btn-sm ${cfg.cls}" onclick="event.stopPropagation(); setTenantStatus('${tenantId}', '${cfg.action}', this)">${cfg.label}</button>`;
+}
+
+async function setTenantStatus(tenantId, action, btn) {
+  const tenant = allTenants.find(t => t.id === tenantId);
+  const name = tenant ? tenant.name : 'this tenant';
+  const confirmMsg = action === 'activate'
+    ? `Activate "${name}"? This restores their WhatsApp session and makes the bot available again.`
+    : `Deactivate "${name}"? This suspends their WhatsApp session until reactivated.`;
+  if (!confirm(confirmMsg)) return;
+
+  await withLoading(btn, action === 'activate' ? 'Activating…' : 'Deactivating…', async () => {
+    try {
+      const response = await fetch(`/admin/tenants/${encodeURIComponent(tenantId)}/${action}`, { method: 'POST' });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.detail || `Failed to ${action} tenant (HTTP ${response.status})`);
+
+      // Patch local state from the server's response and re-render in place —
+      // avoids a full refetch so the current page/search/filter stays intact.
+      if (tenant) {
+        Object.assign(tenant, data.tenant || { status: action === 'activate' ? 'active' : 'suspended' });
+      }
+      updateStatCards();
+      renderTenantsTable();
+    } catch (error) {
+      console.error(`Failed to ${action} tenant:`, error);
+      alert(`Failed to ${action} tenant: ` + error.message);
+    }
+  });
+}
+
+// Disables a button and swaps its label for a spinner while `fn` runs, then
+// always restores it — so a click gives immediate feedback instead of looking
+// like nothing happened until the request resolves.
+async function withLoading(btn, loadingText, fn) {
+  if (!btn) return fn();
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+  try {
+    return await fn();
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+}
+
+async function syncAllWebhooks(btn) {
+  await withLoading(btn, 'Syncing…', async () => {
+    try {
+      const response = await fetch('/admin/tenants/sync-webhooks', { method: 'POST' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Failed to sync webhooks');
+      alert(`Synced ${data.synced.length} session(s).` + (data.failed.length ? `\nFailed: ${data.failed.join(', ')}` : ''));
+    } catch (error) {
+      console.error('Failed to sync webhooks:', error);
+      alert('Failed to sync webhooks: ' + error.message);
+    }
+  });
+}
+
+function updateStatCards() {
+  document.getElementById('stat-total').textContent = allTenants.length;
+  document.getElementById('stat-active').textContent = allTenants.filter(t => t.status === 'active').length;
+  document.getElementById('stat-provisioning').textContent = allTenants.filter(t => t.status === 'provisioning').length;
+  document.getElementById('stat-disconnected').textContent = allTenants.filter(t => t.status === 'disconnected' || t.status === 'suspended').length;
+}
+
+async function loadTenants(btn) {
+  const tbody = document.getElementById('tenants-tbody');
+  tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Loading…</td></tr>';
+  await withLoading(btn, 'Refreshing…', async () => {
+    try {
+      const response = await fetch('/admin/tenants-list');
+      const data = await response.json();
+      allTenants = (data.tenants || []).filter(t => t.status !== 'pending');
+
+      updateStatCards();
+      renderTenantsTable();
+    } catch (error) {
+      console.error('Failed to load tenants:', error);
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-state" style="color: #c93b3b;">Failed to load tenants. Check console.</td></tr>';
+    }
+  });
+}
+
+function renderTenantsTable() {
+  const tbody = document.getElementById('tenants-tbody');
+  const label = document.getElementById('result-label');
+  const pagination = document.getElementById('pagination');
+  const q = document.getElementById('tenant-search').value.trim().toLowerCase();
+  const statusFilter = document.getElementById('status-filter').value;
+
+  if (allTenants.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No tenants yet. Create your first one!</td></tr>';
+    label.textContent = '';
+    pagination.innerHTML = '';
+    return;
+  }
+
+  const filtered = allTenants.filter(t =>
+    (statusFilter === 'all' || t.status === statusFilter) &&
+    (!q || t.name.toLowerCase().includes(q) || t.wa_session_name.toLowerCase().includes(q) || (t.wa_msisdn || '').includes(q))
+  );
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No tenants match your search.</td></tr>';
+    label.textContent = `Showing 0 of ${allTenants.length} tenants`;
+    pagination.innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  currentPage = Math.min(currentPage, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = pageItems.map(t => `
+    <tr onclick="viewTenantDetail('${t.id}', event)">
+      <td>
+        <div class="name-cell">
+          <span class="fw-600">${t.name}</span>
+          ${t.is_internal ? '<span class="internal-chip">internal</span>' : ''}
+        </div>
+      </td>
+      <td><span class="id-chip">${t.wa_session_name}</span></td>
+      <td class="nowrap" style="font-family:'Space Grotesk',sans-serif; color:#565c6b;">${t.wa_msisdn || '—'}</td>
+      <td>${statusBadge(t.status)}</td>
+      <td class="nowrap muted" style="font-size:12.5px;">${formatDate(t.created_at)}</td>
+      <td class="ta-right">${actionButton(t.status, t.id)}</td>
+    </tr>
+  `).join('');
+
+  const filterNote = filtered.length !== allTenants.length ? ` (filtered from ${allTenants.length})` : '';
+  label.textContent = `Showing ${pageItems.length} of ${filtered.length} tenants${filterNote}`;
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+  const maxButtons = 5;
+  let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let end = Math.min(totalPages, start + maxButtons - 1);
+  start = Math.max(1, end - maxButtons + 1);
+
+  const prevDisabled = currentPage === 1;
+  const nextDisabled = currentPage === totalPages;
+
+  let html = `<button class="page-btn${prevDisabled ? ' disabled' : ''}" onclick="${prevDisabled ? '' : `goToPage(${currentPage - 1})`}">‹ Prev</button>`;
+  for (let p = start; p <= end; p++) {
+    html += `<button class="page-btn${p === currentPage ? ' current' : ''}" onclick="goToPage(${p})">${p}</button>`;
+  }
+  html += `<button class="page-btn${nextDisabled ? ' disabled' : ''}" onclick="${nextDisabled ? '' : `goToPage(${currentPage + 1})`}">Next ›</button>`;
+  el.innerHTML = html;
+}
+
+function goToPage(page) {
+  currentPage = page;
+  renderTenantsTable();
+}
+
+function showAddModal() {
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function hideAddModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  document.getElementById('add-form').reset();
+}
+
+async function createTenant(event) {
+  event.preventDefault();
+  const name = document.getElementById('tenant-name').value.trim();
+  const wa_msisdn = document.getElementById('tenant-msisdn').value.trim();
+  const plan = document.getElementById('tenant-plan').value.trim();
+  const owner_phone = document.getElementById('tenant-owner-phone').value.trim();
+  const is_internal = document.getElementById('tenant-internal').checked;
+  const btn = document.getElementById('create-tenant-btn');
+
+  await withLoading(btn, 'Creating…', async () => {
+    try {
+      const response = await fetch('/admin/tenants', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          wa_msisdn: wa_msisdn || null,
+          plan: plan || null,
+          owner_phone: owner_phone || null,
+          is_internal,
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Failed to create tenant');
+
+      hideAddModal();
+      window.location.href = `/admin/tenant/${encodeURIComponent(data.tenant.id)}`;
+    } catch (error) {
+      console.error('Failed to create tenant:', error);
+      alert('Failed to create tenant: ' + error.message);
+    }
+  });
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const date = new Date(dateStr);
+  return date.toLocaleString('en-US', {
+    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+}
+
+document.getElementById('close-modal').addEventListener('click', hideAddModal);
+document.getElementById('cancel-modal').addEventListener('click', hideAddModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modal-overlay')) hideAddModal();
+});
+</script>
+</body>
+</html>

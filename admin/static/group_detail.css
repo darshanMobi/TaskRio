@@ -1,0 +1,34 @@
+/* TaskRio Admin — Group Detail page specific styles */
+/* (base styles live in admin.css) */
+
+.back-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 500; color: var(--muted); margin-bottom: 10px; }
+.back-link:hover { color: var(--indigo); }
+
+.detail-meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+
+.panel-body { padding: 18px; display: flex; flex-direction: column; gap: 4px; }
+
+.badge-inactive { color: var(--faint); background: var(--chip-bg); }
+.badge-blocked { color: #c93b3b; background: #fdeaea; }
+
+.btn-danger { color: #c93b3b; background: #fff; border: 1px solid #f0c8c8; }
+.btn-danger:hover { background: #fdf0f0; }
+
+.error-banner { background: #fdeaea; color: #c93b3b; padding: 10px 14px; border-radius: 8px; margin-top: 12px; font-size: 12.5px; display: none; }
+
+/* Task-creation permissions list */
+.member-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f2f3f6; gap: 12px; }
+.member-row:last-child { border-bottom: none; }
+.member-name { font-weight: 600; font-size: 13.5px; }
+.member-phone { color: var(--faint); font-size: 12px; font-family: 'Space Grotesk', monospace; margin-top: 2px; }
+.member-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Message list (group chat, multiple senders — plain list rather than bubbles) */
+.message-row { padding: 14px 0; border-bottom: 1px solid #f2f3f6; }
+.message-row:last-child { border-bottom: none; }
+.message-row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.message-row-sender { font-weight: 600; font-size: 13px; color: var(--ink); }
+.message-row-time { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+.message-row-text { color: #3a3f4d; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+
+.messages-list { max-height: 600px; overflow-y: auto; }

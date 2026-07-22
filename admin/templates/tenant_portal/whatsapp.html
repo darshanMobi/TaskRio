@@ -1,0 +1,265 @@
+{% extends "tenant_portal/base.html" %}
+{% block title %}WhatsApp - TaskRio{% endblock %}
+{% block content %}
+    <h1>WhatsApp connection</h1>
+    <div style="margin-top:0.5rem;" id="tenant-status-badge"></div>
+
+    <div class="cards">
+        <div class="card">
+            <h2>Pairing QR</h2>
+            <div class="qr-box" id="qr-box">
+                <div class="placeholder">Provision the session to generate a QR code.</div>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="provision-btn" onclick="provisionTenant(this)">Provision session</button>
+                <button class="btn btn-secondary" id="qr-refresh-btn" onclick="loadQr(this)" style="display:none;">Refresh QR</button>
+                <button class="btn btn-secondary" id="qr-download-btn" onclick="downloadQr()" style="display:none;">⬇️ Download QR</button>
+                <button class="btn btn-secondary" id="retry-btn" onclick="retryTenant(this)" style="display:none;">Retry / re-pair</button>
+                <button class="btn btn-danger" id="cancel-provision-btn" onclick="cancelProvisioning(this)" style="display:none;">Cancel provisioning</button>
+                <button class="btn btn-danger" id="unlink-btn" onclick="unlinkDevice(this)" style="display:none;">🔓 Unlink device</button>
+            </div>
+            <div class="error-banner" id="error-banner"></div>
+        </div>
+
+        <div class="card">
+            <h2>Details</h2>
+            <div id="info-rows"></div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="refreshStatus(this)">🔄 Refresh status</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+<script>
+    let pollTimer = null;
+    let lastStatus = null;
+    let currentQrDataUrl = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTenant();
+    });
+
+    function statusBadge(status) {
+        const labels = {
+            active: '✓ Active', provisioning: '… Provisioning', pending: 'Pending',
+            disconnected: '✗ Disconnected', suspended: '✗ Suspended',
+        };
+        return `<span class="badge badge-${status}">${labels[status] || status}</span>`;
+    }
+
+    function showError(message) {
+        const el = document.getElementById('error-banner');
+        el.textContent = message;
+        el.style.display = message ? 'block' : 'none';
+    }
+
+    async function withLoading(btn, loadingText, fn) {
+        if (!btn) return fn();
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+        try {
+            return await fn();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+
+    async function loadTenant() {
+        try {
+            const response = await fetch('/tenant/api/status');
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || 'Failed to load status');
+            renderTenant(data.tenant);
+        } catch (error) {
+            console.error('Failed to load tenant status:', error);
+            showError('Failed to load status');
+        }
+    }
+
+    function renderTenant(t) {
+        document.getElementById('tenant-status-badge').innerHTML = statusBadge(t.status);
+
+        document.getElementById('info-rows').innerHTML = `
+            <div class="info-row"><span>Number</span><span>${t.wa_msisdn || '—'}</span></div>
+            <div class="info-row"><span>Plan</span><span>${t.plan || '—'}</span></div>
+            <div class="info-row"><span>Activated</span><span>${formatDate(t.activated_at)}</span></div>
+        `;
+
+        const provisionBtn = document.getElementById('provision-btn');
+        const qrRefreshBtn = document.getElementById('qr-refresh-btn');
+        const qrDownloadBtn = document.getElementById('qr-download-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const cancelProvisionBtn = document.getElementById('cancel-provision-btn');
+        const unlinkBtn = document.getElementById('unlink-btn');
+
+        if (t.status === 'pending') {
+            provisionBtn.style.display = 'inline-block';
+            qrRefreshBtn.style.display = 'none';
+            qrDownloadBtn.style.display = 'none';
+            retryBtn.style.display = 'none';
+            cancelProvisionBtn.style.display = 'none';
+            unlinkBtn.style.display = 'none';
+            currentQrDataUrl = null;
+        } else if (t.status === 'provisioning') {
+            provisionBtn.style.display = 'none';
+            qrRefreshBtn.style.display = 'inline-block';
+            retryBtn.style.display = 'none';
+            cancelProvisionBtn.style.display = 'inline-block';
+            unlinkBtn.style.display = 'none';
+            if (lastStatus !== 'provisioning') loadQr();
+            startPolling();
+        } else if (t.status === 'active') {
+            provisionBtn.style.display = 'none';
+            qrRefreshBtn.style.display = 'none';
+            qrDownloadBtn.style.display = 'none';
+            retryBtn.style.display = 'none';
+            cancelProvisionBtn.style.display = 'none';
+            unlinkBtn.style.display = 'inline-block';
+            stopPolling();
+            currentQrDataUrl = null;
+            document.getElementById('qr-box').innerHTML = '<div class="placeholder">✓ Paired and active — no QR needed.</div>';
+        } else {
+            provisionBtn.style.display = 'none';
+            qrRefreshBtn.style.display = 'none';
+            qrDownloadBtn.style.display = 'none';
+            retryBtn.style.display = 'inline-block';
+            cancelProvisionBtn.style.display = 'none';
+            unlinkBtn.style.display = 'none';
+            stopPolling();
+            currentQrDataUrl = null;
+            document.getElementById('qr-box').innerHTML = '<div class="placeholder">Session disconnected. Retry to get a new pairing QR.</div>';
+        }
+
+        showError(t.link_error || '');
+
+        lastStatus = t.status;
+    }
+
+    async function provisionTenant(btn) {
+        showError('');
+        await withLoading(btn, 'Provisioning…', async () => {
+            try {
+                const response = await fetch('/tenant/api/provision', { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to provision session');
+                renderTenant(data.tenant);
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    }
+
+    async function retryTenant(btn) {
+        showError('');
+        await withLoading(btn, 'Retrying…', async () => {
+            try {
+                const response = await fetch('/tenant/api/retry', { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to retry session');
+                await loadTenant();
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    }
+
+    async function cancelProvisioning(btn) {
+        if (!confirm('Cancel this provisioning attempt? The WAHA session will be stopped and reset to pending.')) return;
+        showError('');
+        await withLoading(btn, 'Cancelling…', async () => {
+            try {
+                const response = await fetch('/tenant/api/cancel', { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to cancel provisioning');
+                stopPolling();
+                renderTenant(data.tenant);
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    }
+
+    async function unlinkDevice(btn) {
+        if (!confirm('Unlink this WhatsApp device? TaskRio will stop responding on this number until you re-pair it with a fresh QR code.')) return;
+        showError('');
+        await withLoading(btn, 'Unlinking…', async () => {
+            try {
+                const response = await fetch('/tenant/api/unlink', { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to unlink device');
+                renderTenant(data.tenant);
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    }
+
+    async function loadQr(btn) {
+        const box = document.getElementById('qr-box');
+        const qrDownloadBtn = document.getElementById('qr-download-btn');
+        box.innerHTML = '<div class="placeholder">Loading QR…</div>';
+        qrDownloadBtn.style.display = 'none';
+        currentQrDataUrl = null;
+        await withLoading(btn, 'Loading…', async () => {
+            try {
+                const response = await fetch('/tenant/api/qr');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load QR');
+                currentQrDataUrl = `data:${data.mimetype};base64,${data.data}`;
+                box.innerHTML = `<img src="${currentQrDataUrl}" alt="Pairing QR code">`;
+                qrDownloadBtn.style.display = 'inline-block';
+            } catch (error) {
+                box.innerHTML = '<div class="placeholder">QR not ready yet — try refreshing in a moment.</div>';
+            }
+        });
+    }
+
+    function downloadQr() {
+        if (!currentQrDataUrl) return;
+        const ext = (currentQrDataUrl.match(/^data:image\/(\w+);/) || [, 'png'])[1];
+        const link = document.createElement('a');
+        link.href = currentQrDataUrl;
+        link.download = `taskrio-qr.${ext}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    async function refreshStatus(btn) {
+        showError('');
+        await withLoading(btn, 'Refreshing…', async () => {
+            try {
+                const response = await fetch('/tenant/api/status');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to fetch live status');
+                renderTenant(data.tenant);
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    }
+
+    function startPolling() {
+        if (pollTimer) return;
+        pollTimer = setInterval(loadTenant, 3000);
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '—';
+        const date = new Date(dateStr);
+        return date.toLocaleString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+    }
+</script>
+{% endblock %}

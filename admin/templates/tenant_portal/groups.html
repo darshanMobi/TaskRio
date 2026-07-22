@@ -1,0 +1,208 @@
+{% extends "tenant_portal/base.html" %}
+{% block title %}Groups - TaskRio{% endblock %}
+{% block content %}
+    <h1>Groups</h1>
+
+    <div class="cards">
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Pending invite requests</h2>
+            <p style="color:#6b7280; font-size:0.85rem; margin:-0.5rem 0 1rem;">
+                Someone DMed your number a group invite link. Approve to have TaskRio join, or reject to decline.
+            </p>
+            <div id="invites-list"><div class="placeholder">Loading…</div></div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="invites-refresh-btn" onclick="loadInvites(this)">🔄 Refresh</button>
+            </div>
+            <div class="error-banner" id="invites-error-banner"></div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>WhatsApp groups</h2>
+            <p style="color:#6b7280; font-size:0.85rem; margin:-0.5rem 0 1rem;">
+                Groups your paired number already belongs to. Approve so TaskRio responds in them.
+            </p>
+            <div id="groups-list"><div class="placeholder">Pair your WhatsApp number to see its groups.</div></div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="groups-refresh-btn" onclick="loadGroups(this)">🔄 Refresh groups</button>
+            </div>
+            <div class="error-banner" id="groups-error-banner"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadInvites();
+        loadGroups();
+    });
+
+    async function withLoading(btn, loadingText, fn) {
+        if (!btn) return fn();
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+        try {
+            return await fn();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+
+    function showInvitesError(message) {
+        const el = document.getElementById('invites-error-banner');
+        el.textContent = message;
+        el.style.display = message ? 'block' : 'none';
+    }
+
+    function inviteRow(inv) {
+        return `
+            <div class="info-row">
+                <span>${inv.group_name || '(unnamed group)'}<br><span class="session-name">Invited by ${inv.invited_by_phone}</span></span>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                    <button class="btn btn-primary" style="padding:0.3rem 0.7rem;font-size:12px;" onclick="approveInvite(${inv.id}, this)">Approve</button>
+                    <button class="btn btn-danger" style="padding:0.3rem 0.7rem;font-size:12px;" onclick="rejectInvite(${inv.id}, this)">Reject</button>
+                </span>
+            </div>
+        `;
+    }
+
+    async function loadInvites(btn) {
+        const list = document.getElementById('invites-list');
+        showInvitesError('');
+        await withLoading(btn, 'Loading…', async () => {
+            try {
+                const response = await fetch('/tenant/api/pending-invites');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load invites');
+                if (!data.invites.length) {
+                    list.innerHTML = '<div class="placeholder">No pending invite requests.</div>';
+                    return;
+                }
+                list.innerHTML = data.invites.map(inv => inviteRow(inv)).join('');
+            } catch (error) {
+                showInvitesError(error.message);
+            }
+        });
+    }
+
+    async function approveInvite(id, btn) {
+        showInvitesError('');
+        await withLoading(btn, 'Approving…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/pending-invites/${id}/approve`, { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to approve invite');
+                await loadInvites();
+                await loadGroups();
+            } catch (error) {
+                showInvitesError(error.message);
+            }
+        });
+    }
+
+    async function rejectInvite(id, btn) {
+        showInvitesError('');
+        await withLoading(btn, 'Rejecting…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/pending-invites/${id}/reject`, { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to reject invite');
+                await loadInvites();
+            } catch (error) {
+                showInvitesError(error.message);
+            }
+        });
+    }
+
+    function groupStatusBadge(status) {
+        const map = {
+            approved: '<span class="badge badge-active">✓ Approved</span>',
+            rejected: '<span class="badge badge-disconnected">✗ Rejected</span>',
+            pending: '<span class="badge badge-pending">Pending</span>',
+        };
+        return map[status] || map.pending;
+    }
+
+    function groupRow(g) {
+        const meta = `${g.size != null ? g.size + ' members · ' : ''}${g.id}`;
+        let actions = '';
+        if (g.status !== 'approved') {
+            actions += `<button class="btn btn-primary" style="padding:0.3rem 0.7rem;font-size:12px;" onclick="approveGroup('${g.id}', this)">Approve</button>`;
+        }
+        if (g.status !== 'rejected') {
+            actions += `<button class="btn btn-danger" style="padding:0.3rem 0.7rem;font-size:12px;margin-left:0.4rem;" onclick="rejectGroup('${g.id}', this)">Reject</button>`;
+        }
+        if (g.status === 'approved') {
+            actions += `<a class="btn btn-secondary" style="padding:0.3rem 0.7rem;font-size:12px;margin-left:0.4rem;" href="/tenant/groups/${encodeURIComponent(g.id)}/members">Manage members</a>`;
+        }
+        return `
+            <div class="info-row">
+                <span>${g.name}<br><span class="session-name">${meta}</span></span>
+                <span style="display:flex;align-items:center;gap:0.5rem;">${groupStatusBadge(g.status)}${actions}</span>
+            </div>
+        `;
+    }
+
+    function showGroupsError(message) {
+        const el = document.getElementById('groups-error-banner');
+        el.textContent = message;
+        el.style.display = message ? 'block' : 'none';
+    }
+
+    async function loadGroups(btn) {
+        const list = document.getElementById('groups-list');
+        showGroupsError('');
+        await withLoading(btn, 'Loading…', async () => {
+            try {
+                const response = await fetch('/tenant/api/groups');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load groups');
+                if (!data.groups.length) {
+                    list.innerHTML = '<div class="placeholder">This number isn\'t a member of any WhatsApp groups yet.</div>';
+                    return;
+                }
+                list.innerHTML = data.groups.map(g => groupRow(g)).join('');
+            } catch (error) {
+                showGroupsError(error.message);
+            }
+        });
+    }
+
+    async function approveGroup(groupId, btn) {
+        showGroupsError('');
+        await withLoading(btn, 'Approving…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/groups/${encodeURIComponent(groupId)}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to approve group');
+                await loadGroups();
+            } catch (error) {
+                showGroupsError(error.message);
+            }
+        });
+    }
+
+    async function rejectGroup(groupId, btn) {
+        showGroupsError('');
+        await withLoading(btn, 'Rejecting…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/groups/${encodeURIComponent(groupId)}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to reject group');
+                await loadGroups();
+            } catch (error) {
+                showGroupsError(error.message);
+            }
+        });
+    }
+</script>
+{% endblock %}

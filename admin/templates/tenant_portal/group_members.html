@@ -1,0 +1,123 @@
+{% extends "tenant_portal/base.html" %}
+{% block title %}Group Members - TaskRio{% endblock %}
+{% block content %}
+    <a href="/tenant/groups" class="back-link">← Back to Groups</a>
+    <h1>Group members</h1>
+    <p style="color:#6b7280; font-size:0.85rem; margin:-0.5rem 0 1rem;">
+        Control who can create tasks in this group. Everyone is allowed by default —
+        block specific members to stop them from creating tasks; TaskRio still works
+        normally for everyone else.
+    </p>
+
+    <div class="cards">
+        <div class="card" style="grid-column: 1 / -1;">
+            <div id="members-list"><div class="placeholder">Loading…</div></div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="members-refresh-btn" onclick="loadMembers(this)">🔄 Refresh</button>
+            </div>
+            <div class="error-banner" id="members-error-banner"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+<script>
+    const GROUP_ID = {{ group_id | tojson }};
+
+    document.addEventListener('DOMContentLoaded', () => loadMembers());
+
+    async function withLoading(btn, loadingText, fn) {
+        if (!btn) return fn();
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="btn-spinner"></span>${loadingText}`;
+        try {
+            return await fn();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+
+    function showMembersError(message) {
+        const el = document.getElementById('members-error-banner');
+        el.textContent = message;
+        el.style.display = message ? 'block' : 'none';
+    }
+
+    function roleBadge(role) {
+        if (role === 'admin' || role === 'superadmin') {
+            return '<span class="badge badge-pending">group admin</span>';
+        }
+        return '';
+    }
+
+    function memberRow(m) {
+        const action = m.blocked
+            ? `<button class="btn btn-secondary" style="padding:0.3rem 0.7rem;font-size:12px;" onclick="unblockMember('${m.wa_id}', this)">Unblock</button>`
+            : `<button class="btn btn-danger" style="padding:0.3rem 0.7rem;font-size:12px;" onclick="blockMember('${m.wa_id}', this)">Block from creating tasks</button>`;
+        const status = m.blocked
+            ? '<span class="badge badge-disconnected">Blocked</span>'
+            : '<span class="badge badge-active">Allowed</span>';
+        const phone = m.wa_id.split('@')[0];
+        return `
+            <div class="info-row">
+                <span>${m.name}<br><span class="session-name">${phone}</span> ${roleBadge(m.role)}</span>
+                <span style="display:flex;align-items:center;gap:0.5rem;">${status}${action}</span>
+            </div>
+        `;
+    }
+
+    async function loadMembers(btn) {
+        const list = document.getElementById('members-list');
+        showMembersError('');
+        await withLoading(btn, 'Loading…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/groups/${encodeURIComponent(GROUP_ID)}/members`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to load members');
+                if (!data.members.length) {
+                    list.innerHTML = '<div class="placeholder">No participants found for this group.</div>';
+                    return;
+                }
+                list.innerHTML = data.members.map(m => memberRow(m)).join('');
+            } catch (error) {
+                showMembersError(error.message);
+            }
+        });
+    }
+
+    async function blockMember(waId, btn) {
+        showMembersError('');
+        await withLoading(btn, 'Blocking…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/groups/${encodeURIComponent(GROUP_ID)}/members/${encodeURIComponent(waId)}/block`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to block member');
+                await loadMembers();
+            } catch (error) {
+                showMembersError(error.message);
+            }
+        });
+    }
+
+    async function unblockMember(waId, btn) {
+        showMembersError('');
+        await withLoading(btn, 'Unblocking…', async () => {
+            try {
+                const response = await fetch(`/tenant/api/groups/${encodeURIComponent(GROUP_ID)}/members/${encodeURIComponent(waId)}/unblock`, {
+                    method: 'POST',
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed to unblock member');
+                await loadMembers();
+            } catch (error) {
+                showMembersError(error.message);
+            }
+        });
+    }
+</script>
+{% endblock %}

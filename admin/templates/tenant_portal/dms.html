@@ -1,0 +1,149 @@
+{% extends "tenant_portal/base.html" %}
+{% block title %}DMs - TaskRio{% endblock %}
+{% block extra_style %}
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.stat-value { font-size: 2rem; font-weight: bold; color: #111827; }
+.stat-label { color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem; }
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+    overflow-x: auto;
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+tbody tr { cursor: pointer; transition: background 0.15s; }
+tbody tr:hover { background: #f9fafb; }
+.sparkline { width: 100px; height: 30px; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+{% endblock %}
+{% block content %}
+    <h1>Direct Messages</h1>
+    <p class="subtitle" id="subtitle" style="color:#6b7280; margin-bottom: 2rem;">People messaging your TaskRio number directly</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-value" id="total-dms">-</div>
+            <div class="stat-label">Total DM Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="total-messages">-</div>
+            <div class="stat-label">Total Messages</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Phone</th>
+                    <th>Messages</th>
+                    <th>Last Activity</th>
+                    <th>Activity (30d)</th>
+                </tr>
+            </thead>
+            <tbody id="dm-list">
+                <tr><td colspan="5" class="placeholder">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block extra_script %}
+<script>
+    async function loadDMs() {
+        try {
+            const response = await fetch('/tenant/api/dms');
+            const data = await response.json();
+
+            const tbody = document.getElementById('dm-list');
+            tbody.innerHTML = '';
+
+            if (!data.dms.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="placeholder">No DM conversations yet</td></tr>';
+                return;
+            }
+
+            document.getElementById('total-dms').textContent = data.dms.length;
+            const totalMessages = data.dms.reduce((sum, dm) => sum + (dm.message_count || 0), 0);
+            document.getElementById('total-messages').textContent = totalMessages.toLocaleString();
+
+            data.dms.forEach(dm => {
+                const row = document.createElement('tr');
+                row.onclick = () => window.location.href = `/tenant/dm/${encodeURIComponent(dm.wa_id)}`;
+
+                const displayName = dm.display_name || 'Unknown User';
+                const phone = dm.phone || dm.wa_id;
+                const msgCount = dm.message_count || 0;
+                const lastActivity = dm.last_activity ? new Date(dm.last_activity).toLocaleString() : '-';
+
+                const sparklineCanvas = document.createElement('canvas');
+                sparklineCanvas.className = 'sparkline';
+                sparklineCanvas.width = 100;
+                sparklineCanvas.height = 30;
+
+                row.innerHTML = `
+                    <td><strong>${displayName}</strong></td>
+                    <td><span class="badge badge-blue">${phone}</span></td>
+                    <td>${msgCount.toLocaleString()}</td>
+                    <td>${lastActivity}</td>
+                    <td></td>
+                `;
+                row.lastElementChild.appendChild(sparklineCanvas);
+
+                if (dm.message_volume && dm.message_volume.length > 0) {
+                    drawSparkline(sparklineCanvas, dm.message_volume);
+                }
+
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Failed to load DMs:', error);
+            document.getElementById('dm-list').innerHTML =
+                '<tr><td colspan="5" style="text-align:center; color:#ef4444;">Failed to load DM conversations</td></tr>';
+        }
+    }
+
+    function drawSparkline(canvas, data) {
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const max = Math.max(...data, 1);
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+
+        data.forEach((value, i) => {
+            const x = (i / (data.length - 1)) * width;
+            const y = height - (value / max) * height;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+
+        ctx.stroke();
+    }
+
+    loadDMs();
+</script>
+{% endblock %}

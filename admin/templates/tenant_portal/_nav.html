@@ -1,0 +1,9 @@
+<div class="nav">
+    <a href="/tenant" class="{{ 'active' if request.url.path == '/tenant' else '' }}">📊 Dashboard</a>
+    <a href="/tenant/whatsapp" class="{{ 'active' if request.url.path == '/tenant/whatsapp' else '' }}">📱 WhatsApp</a>
+    <a href="/tenant/groups" class="{{ 'active' if request.url.path == '/tenant/groups' else '' }}">🔒 Groups</a>
+    <a href="/tenant/dms" class="{{ 'active' if request.url.path.startswith('/tenant/dms') or request.url.path.startswith('/tenant/dm/') else '' }}">💬 DMs</a>
+    <span class="spacer"></span>
+    {% if role %}<span class="role-pill">{{ role }}</span>{% endif %}
+    <a href="/tenant/logout">Logout</a>
+</div>

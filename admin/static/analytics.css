@@ -1,0 +1,36 @@
+/* TaskRio Admin — Demo Funnel Analytics page specific styles */
+/* (base styles live in admin.css) */
+
+/* Range tabs */
+.range-tabs { display: flex; gap: 6px; background: #fff; border: 1px solid #e4e6ec; border-radius: 12px; padding: 6px; width: fit-content; box-shadow: 0 1px 2px rgba(20,22,30,0.04); flex-wrap: wrap; }
+.range-btn { font-family: 'IBM Plex Sans', sans-serif; font-size: 12.5px; font-weight: 600; border: none; border-radius: 8px; padding: 7px 16px; cursor: pointer; background: transparent; color: #565c6b; transition: background .15s, color .15s; white-space: nowrap; }
+.range-btn:hover { background: #f2f3f6; }
+.range-btn.active { background: linear-gradient(135deg, #4f46e5, #6d5ce8); color: #fff; }
+
+/* Funnel cards grid (6-up) */
+.funnel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.funnel-card { position: relative; overflow: hidden; background: #fff; border: 1px solid #e4e6ec; border-radius: 12px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: box-shadow .18s, transform .18s; }
+.funnel-card:hover { box-shadow: 0 8px 24px rgba(60,56,160,0.12); transform: translateY(-2px); }
+.funnel-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad); }
+.funnel-card.selected { outline: 2px solid var(--dot); }
+.funnel-label { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #8a8f9e; line-height: 13px; min-height: 26px; display: flex; align-items: center; }
+.funnel-value { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: var(--dot); }
+.funnel-conv { font-size: 11px; font-weight: 500; }
+
+/* Chart panels */
+.chart-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+
+/* User details drill-down */
+.user-details-panel { display: none; }
+.user-details-panel.show { display: block; }
+.users-table .phone-cell { font-weight: 700; color: var(--indigo); font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; cursor: pointer; }
+.users-table tbody tr:hover .phone-cell { text-decoration: underline; }
+.users-table .phone-sub { display: block; color: var(--faint); font-weight: 400; font-size: 11.5px; margin-top: 2px; }
+.status-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.status-completed { background: var(--green-tint); color: var(--green); }
+.status-step { background: var(--amber-tint); color: var(--amber); }
+.status-started { background: var(--indigo-tint); color: var(--indigo); }
+.timestamp { color: #565c6b; font-size: 12.5px; }
+.no-data-cell { color: #b6bac4; font-style: italic; }
+.attempts-flag { color: var(--amber); font-weight: 700; }
+

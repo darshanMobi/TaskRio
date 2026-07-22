@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Funnel - TaskRio Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css">
+<link rel="stylesheet" href="/admin/static/analytics.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
+        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+      </a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item" href="/admin">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="currentColor"/><rect x="6.5" y="4" width="3" height="10" rx="1" fill="currentColor"/><rect x="11" y="6" width="3" height="8" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="/admin/groups">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-2 1.6-3.3 3.5-3.3S9 11 9 13M9.8 13c0-1.6 1-2.6 2.4-2.6s2.3 1 2.3 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Groups
+      </a>
+      <a class="nav-item" href="/admin/tenants">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5V4.8L8 2l5.5 2.8v8.7M6 13.5V9.5h4v4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M1.5 13.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Tenants
+      </a>
+      <a class="nav-item" href="/admin/dms">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 7.6c0 3-2.7 5.4-6 5.4-.8 0-1.6-.1-2.3-.4L2.5 13.7l.9-2.6C2.5 10.2 2 9 2 7.6c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        DMs
+      </a>
+      <a class="nav-item active" href="/admin/analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12l-4.6 5.4v4.1L6.6 14V8.4L2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Demo Funnel
+      </a>
+      <a class="nav-item" href="/admin/suggestions">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.6 4.6 0 00-2.6 8.4c.5.4.9 1 .9 1.6h3.4c0-.6.4-1.2.9-1.6A4.6 4.6 0 008 1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Suggestions
+      </a>
+      <a class="nav-item" href="/admin/reminders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.3 4.3 0 00-4.3 4.3c0 2.2-.6 3.6-1.2 4.4h11c-.6-.8-1.2-2.2-1.2-4.4A4.3 4.3 0 008 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 13.3a1.5 1.5 0 002.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Reminders
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item logout" href="/admin/logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page">
+
+      <header class="page-header">
+        <div>
+          <h1>Demo Funnel Analytics</h1>
+          <p>Tutorial completion funnel with user details and activity trends</p>
+        </div>
+        <div class="btn-row">
+          <div class="live-pill"><span class="live-dot"></span><span id="load-status">Live</span></div>
+          <button class="btn btn-primary" id="reload-btn">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reload Charts
+          </button>
+        </div>
+      </header>
+
+      <!-- Time range picker -->
+      <div class="range-tabs" id="range-tabs">
+        <button class="range-btn" data-days="1">Last 24 Hours</button>
+        <button class="range-btn active" data-days="7">Last 7 Days</button>
+        <button class="range-btn" data-days="30">Last 30 Days</button>
+        <button class="range-btn" data-days="90">Last 90 Days</button>
+        <button class="range-btn" data-days="365">Last Year</button>
+      </div>
+
+      <!-- Funnel KPI cards -->
+      <div class="funnel-grid" id="funnel-cards"></div>
+
+      <!-- Funnel bar chart -->
+      <section class="panel" style="padding:20px 22px;">
+        <div class="chart-head">
+          <div>
+            <h2 class="panel-title">Tutorial Funnel</h2>
+            <p class="panel-note" style="margin-top:4px;">Click any bar or stat card to see user details</p>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;font-size:12px;color:#8a8f9e;">
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:3px;background:#4f46e5;"></span>Users</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 760 220" style="width:100%;height:auto;display:block;" id="funnel-chart"></svg>
+      </section>
+
+      <!-- Daily Activity Trends -->
+      <section class="panel" style="padding:20px 22px;">
+        <div class="chart-head">
+          <div>
+            <h2 class="panel-title">Daily Activity Trends</h2>
+            <p class="panel-note" style="margin-top:4px;">Tutorial starts vs completions over time</p>
+          </div>
+          <div style="display:flex;gap:14px;font-size:12px;color:#565c6b;">
+            <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:#4f46e5;"></span>Starts</span>
+            <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:#22c55e;"></span>Completions</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 760 180" style="width:100%;height:auto;display:block;" id="activity-chart"></svg>
+      </section>
+
+      <!-- User Details drill-down -->
+      <section class="panel user-details-panel" id="user-details" style="padding:20px 22px;">
+        <div class="chart-head" style="margin-bottom:12px;">
+          <h2 class="panel-title" id="user-details-title">User Details</h2>
+          <button class="btn btn-sm btn-reject" onclick="hideUserDetails()">Close</button>
+        </div>
+        <div class="table-scroll sticky-scroll">
+          <table class="table users-table" id="users-table" style="min-width:1100px;">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)" style="cursor:pointer;">Phone Number</th>
+                <th onclick="sortTable(1)" style="cursor:pointer;">Status</th>
+                <th onclick="sortTable(2)" style="cursor:pointer;">Attempts</th>
+                <th onclick="sortTable(3)" style="cursor:pointer;">Started At</th>
+                <th onclick="sortTable(4)" style="cursor:pointer;">Sent Demo At</th>
+                <th onclick="sortTable(5)" style="cursor:pointer;">First Task At</th>
+                <th onclick="sortTable(6)" style="cursor:pointer;">Completed At</th>
+                <th onclick="sortTable(7)" style="cursor:pointer;">Tasks Created</th>
+                <th onclick="sortTable(8)" style="cursor:pointer;">Messages</th>
+                <th onclick="sortTable(9)" style="cursor:pointer;">Last Seen</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+let currentPeriod = 7;
+let funnelData = null;
+
+const FUNNEL_STEPS = [
+  { key: 'started',  label: 'Tutorial Starts',           dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)', bar0: '#4f46e5', bar1: '#8b5cf6' },
+  { key: 'step1',    label: 'Step 1: Natural Language',  dot: '#8b5cf6', grad: 'linear-gradient(90deg,#8b5cf6,#a78bfa)', bar0: '#8b5cf6', bar1: '#a78bfa' },
+  { key: 'step2',    label: 'Step 2: Reply Update',       dot: '#ec4899', grad: 'linear-gradient(90deg,#ec4899,#f9a8d4)', bar0: '#ec4899', bar1: '#f9a8d4' },
+  { key: 'step3',    label: 'Step 3: View Tasks',         dot: '#f59e0b', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d' },
+  { key: 'step4',    label: 'Step 4: Implicit Command',   dot: '#f59e0b', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d' },
+  { key: 'complete', label: 'Tutorial Complete',          dot: '#22c55e', grad: 'linear-gradient(90deg,#22c55e,#86efac)', bar0: '#22c55e', bar1: '#86efac' },
+];
+const BAR_LABELS = ['Started Tutorial', 'Step 1 · Natural Language', 'Step 2 · Reply Update', 'Step 3 · View Tasks', 'Step 4 · Implicit Command', 'Fully Completed'];
+let selectedStep = null;
+
+document.getElementById('range-tabs').addEventListener('click', (e) => {
+  const btn = e.target.closest('.range-btn');
+  if (!btn) return;
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPeriod = parseInt(btn.dataset.days, 10);
+  loadDashboard();
+});
+
+document.getElementById('reload-btn').addEventListener('click', loadDashboard);
+
+async function fetchFunnelData() {
+  try {
+    const response = await fetch(`/analytics/tutorial-funnel?days=${currentPeriod}`);
+    if (!response.ok) throw new Error('Failed to fetch funnel data');
+    funnelData = await response.json();
+    return true;
+  } catch (error) {
+    console.error('Error fetching funnel data:', error);
+    return false;
+  }
+}
+
+async function fetchActivityData() {
+  try {
+    const response = await fetch(`/analytics/daily-activity?days=${currentPeriod}`);
+    if (!response.ok) throw new Error('Failed to fetch activity data');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching activity data:', error);
+    return null;
+  }
+}
+
+function niceMax(values) {
+  const max = Math.max(1, ...values);
+  const step = Math.pow(10, Math.floor(Math.log10(max)));
+  return Math.max(step, Math.ceil(max / step) * step);
+}
+
+async function loadDashboard() {
+  document.getElementById('load-status').textContent = 'Loading…';
+  const ok = await fetchFunnelData();
+  if (!ok || !funnelData) {
+    document.getElementById('load-status').textContent = 'Failed to load';
+    return;
+  }
+
+  renderFunnelCards();
+  renderFunnelChart();
+
+  const activityData = await fetchActivityData();
+  if (activityData) {
+    renderActivityChart(activityData);
+  }
+  document.getElementById('load-status').textContent = 'Live';
+}
+
+function stepValue(idx) {
+  const s = funnelData.summary;
+  return [s.total_started, s.completed_step1, s.completed_step2, s.completed_step3, s.completed_step4, s.completed_all][idx];
+}
+
+function stepSub(idx) {
+  if (idx === 0) return { text: 'Users who sent "Demo"', color: '#8a8f9e' };
+  const r = funnelData.conversion_rates;
+  const rate = [null, r.step1_rate, r.step2_rate, r.step3_rate, r.step4_rate, r.completion_rate][idx];
+  return { text: `${rate}% conversion`, color: rate >= 50 ? '#1d9e68' : rate >= 20 ? '#dd8410' : '#c93b3b' };
+}
+
+function renderFunnelCards() {
+  const grid = document.getElementById('funnel-cards');
+  grid.innerHTML = FUNNEL_STEPS.map((step, i) => {
+    const value = stepValue(i);
+    const sub = stepSub(i);
+    const isSelected = selectedStep === i;
+    return `<div class="funnel-card${isSelected ? ' selected' : ''}" style="--dot:${step.dot}; --grad:${step.grad};" onclick="onFunnelCardClick(${i})">
+      <span class="funnel-label">${step.label}</span>
+      <div class="funnel-value">${value}</div>
+      <div class="funnel-conv" style="color:${sub.color};">${sub.text}</div>
+    </div>`;
+  }).join('');
+}
+
+function onFunnelCardClick(idx) {
+  selectedStep = selectedStep === idx ? null : idx;
+  renderFunnelCards();
+  showUserDetails(idx);
+}
+
+function renderFunnelChart() {
+  const svg = document.getElementById('funnel-chart');
+  const values = FUNNEL_STEPS.map((_, i) => stepValue(i));
+  const max = niceMax(values);
+
+  const W = 760, topY = 8, bottomY = 198, plotH = bottomY - topY;
+  const xs = [72, 192, 312, 432, 552, 672];
+  const barW = 70;
+
+  let defsSvg = '';
+  FUNNEL_STEPS.forEach((step, i) => {
+    defsSvg += `<linearGradient id="funnel-bar${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${step.bar0}"/><stop offset="1" stop-color="${step.bar1}" stop-opacity=".7"/></linearGradient>`;
+  });
+
+  let gridSvg = '', axisSvg = '';
+  for (let f = 0; f <= 1; f += 0.25) {
+    const yy = topY + plotH * (1 - f);
+    gridSvg += `<line x1="40" y1="${yy}" x2="750" y2="${yy}"/>`;
+    axisSvg += `<text x="32" y="${yy + 4}">${Math.round(max * f)}</text>`;
+  }
+
+  let barsSvg = '', labelsSvg = '', valuesSvg = '';
+  xs.forEach((x, i) => {
+    const v = values[i];
+    const barH = Math.max((v / max) * plotH, v > 0 ? 4 : 0);
+    const barY = bottomY - barH;
+    barsSvg += `<rect x="${x}" y="${barY}" width="${barW}" height="${barH}" rx="6" fill="url(#funnel-bar${i})" style="cursor:pointer;" onclick="onFunnelCardClick(${i})"/>`;
+    labelsSvg += `<text x="${x + barW / 2}" y="216">${BAR_LABELS[i]}</text>`;
+    if (barH >= 22) {
+      valuesSvg += `<text x="${x + barW / 2}" y="${barY + 20}" fill="#fff" font-weight="700">${v}</text>`;
+    } else {
+      valuesSvg += `<text x="${x + barW / 2}" y="${barY - 6}" fill="#565c6b" font-weight="700">${v}</text>`;
+    }
+  });
+
+  svg.innerHTML = `
+    <defs>${defsSvg}</defs>
+    <g stroke="#eef0f4" stroke-width="1">${gridSvg}</g>
+    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="end">${axisSvg}</g>
+    ${barsSvg}
+    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="middle">${labelsSvg}</g>
+    <g font-size="11" font-family="Space Grotesk" text-anchor="middle">${valuesSvg}</g>
+  `;
+}
+
+function renderActivityChart(activityData) {
+  const svg = document.getElementById('activity-chart');
+  if (!activityData.tutorial_starts_by_day || !activityData.tasks_created_by_day) return;
+
+  const starts = [...activityData.tutorial_starts_by_day].reverse();
+  const completions = [...activityData.tasks_created_by_day].reverse();
+  const labels = starts.map(d => d.date);
+  const startVals = starts.map(d => d.count);
+  const compVals = completions.map(d => d.count);
+  const n = labels.length;
+  const max = niceMax(startVals.concat(compVals));
+
+  const W = 760, H = 180, padL = 40, padR = 10, padT = 10, padB = 20;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const x = i => n > 1 ? padL + (i / (n - 1)) * plotW : padL + plotW / 2;
+  const y = v => padT + plotH - (v / max) * plotH;
+
+  let gridSvg = '', axisSvg = '';
+  for (let f = 0; f <= 1; f += 0.25) {
+    const yy = padT + plotH * (1 - f);
+    gridSvg += `<line x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}"/>`;
+    axisSvg += `<text x="${padL - 8}" y="${yy + 4}">${Math.round(max * f)}</text>`;
+  }
+
+  const startPts = startVals.map((v, i) => `${x(i)},${y(v)}`).join(' ');
+  const compPts = compVals.map((v, i) => `${x(i)},${y(v)}`).join(' ');
+  const areaPath = n
+    ? `M${x(0)} ${y(startVals[0])} ` + startVals.map((v, i) => `L${x(i)} ${y(v)}`).join(' ') + ` L${x(n - 1)} ${padT + plotH} L${x(0)} ${padT + plotH} Z`
+    : '';
+
+  const showDots = n <= 14;
+  const dotsStart = showDots ? startVals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.2"/>`).join('') : '';
+  const dotsComp = showDots ? compVals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.2"/>`).join('') : '';
+
+  const tickCount = Math.min(7, n);
+  let labelsSvg = '';
+  for (let i = 0; i < tickCount; i++) {
+    const idx = tickCount > 1 ? Math.round(i * (n - 1) / (tickCount - 1)) : 0;
+    labelsSvg += `<text x="${x(idx)}" y="${H - 4}">${labels[idx]}</text>`;
+  }
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="trend-area" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4f46e5" stop-opacity="0.18"/><stop offset="1" stop-color="#4f46e5" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke="#eef0f4" stroke-width="1">${gridSvg}</g>
+    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="end">${axisSvg}</g>
+    <path d="${areaPath}" fill="url(#trend-area)"/>
+    <polyline points="${startPts}" fill="none" stroke="#4f46e5" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+    <polyline points="${compPts}" fill="none" stroke="#22c55e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4,3"/>
+    <g fill="#4f46e5">${dotsStart}</g>
+    <g fill="#22c55e">${dotsComp}</g>
+    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="middle">${labelsSvg}</g>
+  `;
+}
+
+async function showUserDetails(index) {
+  if (!funnelData) {
+    alert('Data is still loading. Please wait a moment and try again.');
+    return;
+  }
+
+  let users = [];
+  let title = '';
+
+  switch (index) {
+    case 0: users = funnelData.users.started; title = 'Users Who Started Tutorial'; break;
+    case 1: users = funnelData.users.completed_step1; title = 'Users Who Completed Step 1: Natural Language Task Creation'; break;
+    case 2: users = funnelData.users.completed_step2; title = 'Users Who Completed Step 2: Reply-Based Priority Update'; break;
+    case 3: users = funnelData.users.completed_step3; title = 'Users Who Completed Step 3: View Tasks with List'; break;
+    case 4: users = funnelData.users.completed_step4; title = 'Users Who Completed Step 4: Implicit Command'; break;
+    case 5: users = funnelData.users.completed_all; title = 'Users Who Completed Entire Tutorial'; break;
+  }
+
+  if (users.length === 0) {
+    alert('No users in this category yet.');
+    return;
+  }
+
+  const userIds = users.map(u => u.user_id).join(',');
+  const response = await fetch(`/analytics/user-details?user_ids=${encodeURIComponent(userIds)}`);
+  if (!response.ok) {
+    alert('Failed to fetch user details');
+    return;
+  }
+  const data = await response.json();
+
+  document.getElementById('user-details-title').textContent = `${title} (${data.users.length})`;
+
+  const tableBody = document.getElementById('users-table-body');
+  tableBody.innerHTML = data.users.map(user => {
+    const currentStep = user.current_step || 0;
+    const isCompleted = user.completed || false;
+
+    let statusHtml;
+    if (isCompleted) statusHtml = '<span class="status-badge status-completed">Completed</span>';
+    else if (currentStep > 0) statusHtml = `<span class="status-badge status-step">Step ${currentStep}</span>`;
+    else statusHtml = '<span class="status-badge status-started">Started</span>';
+
+    const formatDateTime = (isoString) => {
+      if (!isoString) return '<span class="no-data-cell">—</span>';
+      const date = new Date(isoString);
+      return `<span class="timestamp">${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>`;
+    };
+
+    const attempts = user.total_attempts || 1;
+    const attemptsHtml = attempts > 1 ? `<span class="attempts-flag">↻ ${attempts}</span>` : `<span>${attempts}</span>`;
+
+    let phoneDisplay = user.phone_number;
+    if (user.display_name) {
+      phoneDisplay = `${user.phone_number}<span class="phone-sub">${user.display_name}</span>`;
+    }
+
+    return `
+      <tr onclick="openWhatsAppDM('${user.phone_number}', '${user.original_user_id || user.user_id}')">
+        <td class="phone-cell" title="Click to view DM conversation">${phoneDisplay}</td>
+        <td>${statusHtml}</td>
+        <td style="text-align:center;">${attemptsHtml}</td>
+        <td>${formatDateTime(user.started_at)}</td>
+        <td>${formatDateTime(user.demo_timestamp)}</td>
+        <td>${formatDateTime(user.first_task_at)}</td>
+        <td>${formatDateTime(user.completed_at)}</td>
+        <td>${user.tasks_created || 0}</td>
+        <td>${user.message_count || 0}</td>
+        <td>${formatDateTime(user.last_seen)}</td>
+      </tr>`;
+  }).join('');
+
+  const panel = document.getElementById('user-details');
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+function hideUserDetails() {
+  document.getElementById('user-details').classList.remove('show');
+  selectedStep = null;
+  renderFunnelCards();
+}
+
+function openWhatsAppDM(phoneNumber, userId) {
+  if (!userId) {
+    alert('Unable to open DM: No user ID available');
+    return;
+  }
+  window.location.href = `/admin/dm/${encodeURIComponent(userId)}`;
+}
+
+let sortDirection = {};
+
+function sortTable(columnIndex) {
+  const table = document.getElementById('users-table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+  const direction = sortDirection[columnIndex];
+
+  rows.sort((a, b) => {
+    const aCell = a.cells[columnIndex].textContent.trim();
+    const bCell = b.cells[columnIndex].textContent.trim();
+
+    if (columnIndex === 2 || columnIndex === 7 || columnIndex === 8) {
+      const aNum = parseInt(aCell.replace(/[^0-9]/g, '')) || 0;
+      const bNum = parseInt(bCell.replace(/[^0-9]/g, '')) || 0;
+      return direction === 'asc' ? aNum - bNum : bNum - aNum;
+    }
+
+    if ((columnIndex >= 3 && columnIndex <= 6) || columnIndex === 9) {
+      const aDate = a.cells[columnIndex].querySelector('.timestamp')?.textContent || '0';
+      const bDate = b.cells[columnIndex].querySelector('.timestamp')?.textContent || '0';
+      const aTime = aDate !== '0' ? new Date(aDate).getTime() : 0;
+      const bTime = bDate !== '0' ? new Date(bDate).getTime() : 0;
+      return direction === 'asc' ? aTime - bTime : bTime - aTime;
+    }
+
+    return direction === 'asc' ? aCell.localeCompare(bCell) : bCell.localeCompare(aCell);
+  });
+
+  tbody.innerHTML = '';
+  rows.forEach(row => tbody.appendChild(row));
+}
+
+loadDashboard();
+</script>
+</body>
+</html>

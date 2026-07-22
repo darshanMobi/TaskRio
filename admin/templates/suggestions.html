@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suggestions - TaskRio Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
+        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+      </a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item" href="/admin">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="currentColor"/><rect x="6.5" y="4" width="3" height="10" rx="1" fill="currentColor"/><rect x="11" y="6" width="3" height="8" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="/admin/groups">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-2 1.6-3.3 3.5-3.3S9 11 9 13M9.8 13c0-1.6 1-2.6 2.4-2.6s2.3 1 2.3 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Groups
+      </a>
+      <a class="nav-item" href="/admin/tenants">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5V4.8L8 2l5.5 2.8v8.7M6 13.5V9.5h4v4" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M1.5 13.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Tenants
+      </a>
+      <a class="nav-item" href="/admin/dms">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 7.6c0 3-2.7 5.4-6 5.4-.8 0-1.6-.1-2.3-.4L2.5 13.7l.9-2.6C2.5 10.2 2 9 2 7.6c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        DMs
+      </a>
+      <a class="nav-item" href="/admin/analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12l-4.6 5.4v4.1L6.6 14V8.4L2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Demo Funnel
+      </a>
+      <a class="nav-item active" href="/admin/suggestions">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.6 4.6 0 00-2.6 8.4c.5.4.9 1 .9 1.6h3.4c0-.6.4-1.2.9-1.6A4.6 4.6 0 008 1.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Suggestions
+      </a>
+      <a class="nav-item" href="/admin/reminders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.3 4.3 0 00-4.3 4.3c0 2.2-.6 3.6-1.2 4.4h11c-.6-.8-1.2-2.2-1.2-4.4A4.3 4.3 0 008 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 13.3a1.5 1.5 0 002.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Reminders
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item logout" href="/admin/logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page">
+
+      <header class="page-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <h1>Latest Suggestions</h1>
+            <span class="badge badge-provisioning" style="font-size:11.5px;padding:3px 10px;text-transform:none;letter-spacing:0;">shadow mode</span>
+          </div>
+          <p>These are suggestions detected by the bot but not acted upon automatically</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="window.location.reload()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="exportCsv()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export CSV
+          </button>
+        </div>
+      </header>
+
+      <div class="stat-grid four-col" id="kpi-grid"></div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">All Suggestions</h2>
+          <div class="filter-row">
+            <div class="search-box">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.4" stroke="#8a8f9e" stroke-width="1.5"/><path d="M9.4 9.4l3 3" stroke="#8a8f9e" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input id="sugg-search" placeholder="Search text or group…">
+            </div>
+            <select id="kind-filter" class="select">
+              <option value="all">All kinds</option>
+              <option value="reminder">reminder</option>
+              <option value="task_create">task_create</option>
+              <option value="priority_update">priority_update</option>
+            </select>
+            <select id="conf-filter" class="select">
+              <option value="all">All confidence</option>
+              <option value="high">High (≥0.80)</option>
+              <option value="med">Medium (0.65–0.79)</option>
+              <option value="low">Low (&lt;0.65)</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-scroll sticky-scroll" style="max-height:520px;">
+          <table class="table" style="min-width:900px;">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Group</th>
+                <th>Kind</th>
+                <th style="text-align:center;">Conf</th>
+                <th>Text</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody id="sugg-tbody"></tbody>
+          </table>
+        </div>
+        <div class="panel-foot">
+          <span id="result-label" class="panel-note"></span>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const suggestions = {{ suggestions | tojson }};
+let currentPage = 1;
+const PAGE_SIZE = 20;
+
+const kindStyles = {
+  reminder:        { ink: '#4f46e5', bg: '#eceafd' },
+  task_create:     { ink: '#1d9e68', bg: '#e3f5ec' },
+  priority_update: { ink: '#dd8410', bg: '#fdf1de' },
+};
+function confStyle(c) {
+  if (c >= 0.80) return '#1d9e68';
+  if (c >= 0.65) return '#dd8410';
+  return '#c93b3b';
+}
+
+function renderKpis() {
+  const byKind = suggestions.reduce((a, d) => { a[d.kind] = (a[d.kind] || 0) + 1; return a; }, {});
+  const kpis = [
+    { label: 'Total Suggestions', value: suggestions.length,        dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)' },
+    { label: 'Reminders',         value: byKind.reminder || 0,        dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)' },
+    { label: 'Task Creates',      value: byKind.task_create || 0,     dot: '#1d9e68', grad: 'linear-gradient(90deg,#1d9e68,#4cc38a)' },
+    { label: 'Priority Updates',  value: byKind.priority_update || 0, dot: '#dd8410', grad: 'linear-gradient(90deg,#dd8410,#f4b04a)' },
+  ];
+  document.getElementById('kpi-grid').innerHTML = kpis.map(c => `
+    <div class="stat-card" style="--dot:${c.dot};--grad:${c.grad};">
+      <span class="stat-label">${c.label}</span>
+      <div class="stat-value">${c.value}</div>
+    </div>`).join('');
+}
+
+const tbody   = document.getElementById('sugg-tbody');
+const search  = document.getElementById('sugg-search');
+const kindSel = document.getElementById('kind-filter');
+const confSel = document.getElementById('conf-filter');
+const label   = document.getElementById('result-label');
+
+function matchesFilters(d, q, kf, cf) {
+  const matchQ = !q || d.text.toLowerCase().includes(q) || d.group_id.toLowerCase().includes(q);
+  const matchK = kf === 'all' || d.kind === kf;
+  const matchC = cf === 'all'
+    || (cf === 'high' && d.confidence >= 0.80)
+    || (cf === 'med'  && d.confidence >= 0.65 && d.confidence < 0.80)
+    || (cf === 'low'  && d.confidence < 0.65);
+  return matchQ && matchK && matchC;
+}
+
+function render() {
+  const q  = search.value.trim().toLowerCase();
+  const kf = kindSel.value;
+  const cf = confSel.value;
+
+  if (suggestions.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No suggestions yet.</td></tr>';
+    label.textContent = '';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const filtered = suggestions.filter(d => matchesFilters(d, q, kf, cf));
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No suggestions match your search.</td></tr>';
+    label.textContent = `Showing 0 of ${suggestions.length} suggestions`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  currentPage = Math.min(currentPage, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = pageItems.map(d => {
+    const ks = kindStyles[d.kind] || { ink: '#565c6b', bg: '#f2f3f6' };
+    const ci = confStyle(d.confidence);
+    const pct = Math.round(d.confidence * 100) + '%';
+    return `<tr>
+      <td style="padding:13px 18px;color:#565c6b;white-space:nowrap;font-size:12px;font-family:'Space Grotesk',sans-serif;">${d.created_at.replace('T', ' ').slice(0, 19)}</td>
+      <td style="padding:13px 14px;"><span class="id-chip" style="font-size:11.5px;">${d.group_id}</span></td>
+      <td style="padding:13px 14px;"><span class="badge" style="color:${ks.ink};background:${ks.bg};text-transform:none;letter-spacing:0;font-size:11px;">${d.kind}</span></td>
+      <td style="padding:13px 14px;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:${ci};">${d.confidence.toFixed(2)}</span>
+          <div style="width:40px;height:4px;border-radius:2px;background:#eef0f4;overflow:hidden;"><div style="height:100%;width:${pct};background:${ci};border-radius:2px;"></div></div>
+        </div>
+      </td>
+      <td style="padding:13px 14px;color:#3a3f4d;font-size:12.5px;max-width:340px;">${d.text}</td>
+      <td style="padding:13px 18px;"><span class="id-chip" style="font-size:11px;color:#8a8f9e;">${d.sugg_id}</span></td>
+    </tr>`;
+  }).join('');
+
+  const filterNote = filtered.length !== suggestions.length ? ` (filtered from ${suggestions.length})` : '';
+  label.textContent = `Showing ${pageItems.length} of ${filtered.length} suggestions${filterNote}`;
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+  const maxButtons = 5;
+  let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let end = Math.min(totalPages, start + maxButtons - 1);
+  start = Math.max(1, end - maxButtons + 1);
+
+  const prevDisabled = currentPage === 1;
+  const nextDisabled = currentPage === totalPages;
+
+  let html = `<button class="page-btn${prevDisabled ? ' disabled' : ''}" onclick="${prevDisabled ? '' : `goToPage(${currentPage - 1})`}">‹ Prev</button>`;
+  for (let p = start; p <= end; p++) {
+    html += `<button class="page-btn${p === currentPage ? ' current' : ''}" onclick="goToPage(${p})">${p}</button>`;
+  }
+  html += `<button class="page-btn${nextDisabled ? ' disabled' : ''}" onclick="${nextDisabled ? '' : `goToPage(${currentPage + 1})`}">Next ›</button>`;
+  el.innerHTML = html;
+}
+
+function goToPage(page) {
+  currentPage = page;
+  render();
+}
+
+function exportCsv() {
+  const header = ['Time', 'Group', 'Kind', 'Confidence', 'Text', 'ID'];
+  const rows = suggestions.map(d => [d.created_at, d.group_id, d.kind, d.confidence, d.text, d.sugg_id]);
+  const csv = [header, ...rows]
+    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'suggestions.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+search.addEventListener('input', () => { currentPage = 1; render(); });
+kindSel.addEventListener('change', () => { currentPage = 1; render(); });
+confSel.addEventListener('change', () => { currentPage = 1; render(); });
+
+renderKpis();
+render();
+</script>
+</body>
+</html>
