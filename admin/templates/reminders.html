@@ -101,10 +101,26 @@
       <section>
         <h2 class="section-title">Overview</h2>
         <div class="stat-grid four-col">
-          <div class="stat-card accent-indigo"><span class="stat-label">Total Reminders Sent</span><div class="stat-value">{{ stats.total_reminders }}</div><div class="stat-sub">in period</div></div>
-          <div class="stat-card accent-green"><span class="stat-label">Unique Users Reminded</span><div class="stat-value">{{ stats.unique_users }}</div><div class="stat-sub">distinct users</div></div>
-          <div class="stat-card accent-violet"><span class="stat-label">New Reminded Users</span><div class="stat-value">{{ stats.new_reminded_users }}</div><div class="stat-sub">first-time</div></div>
-          <div class="stat-card accent-amber"><span class="stat-label">Response Rate</span><div class="stat-value">{{ stats.response_rate }}%</div><div class="stat-sub">{{ responded_count }} of {{ stats.total_reminders }} responded</div></div>
+          <div class="stat-card accent-indigo">
+            <div class="stat-top"><span class="stat-label">Total Reminders Sent</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></span></div>
+            <div class="stat-value">{{ stats.total_reminders }}</div>
+            <div class="stat-sub">in period</div>
+          </div>
+          <div class="stat-card accent-green">
+            <div class="stat-top"><span class="stat-label">Unique Users Reminded</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div>
+            <div class="stat-value">{{ stats.unique_users }}</div>
+            <div class="stat-sub">distinct users</div>
+          </div>
+          <div class="stat-card accent-violet">
+            <div class="stat-top"><span class="stat-label">New Reminded Users</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg></span></div>
+            <div class="stat-value">{{ stats.new_reminded_users }}</div>
+            <div class="stat-sub">first-time</div>
+          </div>
+          <div class="stat-card accent-amber">
+            <div class="stat-top"><span class="stat-label">Response Rate</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span></div>
+            <div class="stat-value">{{ stats.response_rate }}%</div>
+            <div class="stat-sub">{{ responded_count }} of {{ stats.total_reminders }} responded</div>
+          </div>
         </div>
       </section>
 
@@ -112,26 +128,17 @@
       <section>
         <h2 class="section-title">User Interactions</h2>
         <div class="stat-grid three-col">
-          <div class="stat-card accent-indigo" style="gap:8px;">
+          <div class="stat-card accent-indigo">
+            <div class="stat-top"><span class="stat-label">Done Actions</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span></div>
             <div class="stat-value" style="font-size:36px;">{{ stats.actions_done }}</div>
-            <div style="display:flex;align-items:center;gap:7px;">
-              <span class="icon-chip" style="background:#eceafd;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3.5" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="stat-label" style="min-height:auto;">Done Actions</span>
-            </div>
           </div>
-          <div class="stat-card accent-green" style="gap:8px;">
+          <div class="stat-card accent-green">
+            <div class="stat-top"><span class="stat-label">Reschedule Actions</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></span></div>
             <div class="stat-value" style="font-size:36px;">{{ stats.actions_reschedule }}</div>
-            <div style="display:flex;align-items:center;gap:7px;">
-              <span class="icon-chip" style="background:#e3f5ec;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M9.5 5.5A3.5 3.5 0 112.6 3.9M2.6 3.9V1.9m0 2h2" stroke="#1d9e68" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="stat-label" style="min-height:auto;">Reschedule Actions</span>
-            </div>
           </div>
-          <div class="stat-card accent-amber" style="gap:8px;">
+          <div class="stat-card accent-amber">
+            <div class="stat-top"><span class="stat-label">Snooze Actions</span><span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></span></div>
             <div class="stat-value" style="font-size:36px;">{{ stats.actions_snooze }}</div>
-            <div style="display:flex;align-items:center;gap:7px;">
-              <span class="icon-chip" style="background:#fdf1de;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2a4 4 0 00-4 4c0 1.8-.5 2.9-1 3.5h10c-.5-.6-1-1.7-1-3.5a4 4 0 00-4-4z" stroke="#dd8410" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
-              <span class="stat-label" style="min-height:auto;">Snooze Actions</span>
-            </div>
           </div>
         </div>
       </section>
@@ -154,10 +161,19 @@
         <h2 class="section-title">Reminder Types</h2>
         <div class="stat-grid three-col">
           {% set kind_accents = ['accent-indigo', 'accent-green', 'accent-amber', 'accent-violet', 'accent-teal'] %}
+          {% set kind_icons = {
+            'task_due': '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+            'follow_up': '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+            'custom': '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>',
+          } %}
+          {% set default_icon = '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>' %}
           {% for kind, count in stats.reminder_kinds.items() %}
           <div class="stat-card {{ kind_accents[loop.index0 % kind_accents|length] }}">
+            <div class="stat-top">
+              <span class="stat-label">{{ kind.replace('_', ' ') | title }}</span>
+              <span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{{ (kind_icons.get(kind, default_icon)) | safe }}</svg></span>
+            </div>
             <div class="stat-value">{{ count }}</div>
-            <span class="stat-label">{{ kind.replace('_', ' ') | title }}</span>
           </div>
           {% endfor %}
         </div>

@@ -152,12 +152,18 @@ let currentPeriod = 7;
 let funnelData = null;
 
 const FUNNEL_STEPS = [
-  { key: 'started',  label: 'Tutorial Starts',           dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)', bar0: '#4f46e5', bar1: '#8b5cf6' },
-  { key: 'step1',    label: 'Step 1: Natural Language',  dot: '#8b5cf6', grad: 'linear-gradient(90deg,#8b5cf6,#a78bfa)', bar0: '#8b5cf6', bar1: '#a78bfa' },
-  { key: 'step2',    label: 'Step 2: Reply Update',       dot: '#ec4899', grad: 'linear-gradient(90deg,#ec4899,#f9a8d4)', bar0: '#ec4899', bar1: '#f9a8d4' },
-  { key: 'step3',    label: 'Step 3: View Tasks',         dot: '#f59e0b', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d' },
-  { key: 'step4',    label: 'Step 4: Implicit Command',   dot: '#f59e0b', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d' },
-  { key: 'complete', label: 'Tutorial Complete',          dot: '#22c55e', grad: 'linear-gradient(90deg,#22c55e,#86efac)', bar0: '#22c55e', bar1: '#86efac' },
+  { key: 'started',  label: 'Tutorial Starts',           dot: '#4f46e5', dotRgb: '79, 70, 229',   grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)', bar0: '#4f46e5', bar1: '#8b5cf6',
+    icon: '<circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>' },
+  { key: 'step1',    label: 'Step 1: Natural Language',  dot: '#8b5cf6', dotRgb: '139, 92, 246',  grad: 'linear-gradient(90deg,#8b5cf6,#a78bfa)', bar0: '#8b5cf6', bar1: '#a78bfa',
+    icon: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>' },
+  { key: 'step2',    label: 'Step 2: Reply Update',       dot: '#ec4899', dotRgb: '236, 72, 153', grad: 'linear-gradient(90deg,#ec4899,#f9a8d4)', bar0: '#ec4899', bar1: '#f9a8d4',
+    icon: '<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>' },
+  { key: 'step3',    label: 'Step 3: View Tasks',         dot: '#f59e0b', dotRgb: '245, 158, 11', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d',
+    icon: '<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>' },
+  { key: 'step4',    label: 'Step 4: Implicit Command',   dot: '#f59e0b', dotRgb: '245, 158, 11', grad: 'linear-gradient(90deg,#f59e0b,#fcd34d)', bar0: '#f59e0b', bar1: '#fcd34d',
+    icon: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>' },
+  { key: 'complete', label: 'Tutorial Complete',          dot: '#22c55e', dotRgb: '34, 197, 94',   grad: 'linear-gradient(90deg,#22c55e,#86efac)', bar0: '#22c55e', bar1: '#86efac',
+    icon: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>' },
 ];
 const BAR_LABELS = ['Started Tutorial', 'Step 1 · Natural Language', 'Step 2 · Reply Update', 'Step 3 · View Tasks', 'Step 4 · Implicit Command', 'Fully Completed'];
 let selectedStep = null;
@@ -238,8 +244,11 @@ function renderFunnelCards() {
     const value = stepValue(i);
     const sub = stepSub(i);
     const isSelected = selectedStep === i;
-    return `<div class="funnel-card${isSelected ? ' selected' : ''}" style="--dot:${step.dot}; --grad:${step.grad};" onclick="onFunnelCardClick(${i})">
-      <span class="funnel-label">${step.label}</span>
+    return `<div class="funnel-card${isSelected ? ' selected' : ''}" style="--dot:${step.dot}; --dot-rgb:${step.dotRgb}; --grad:${step.grad};" onclick="onFunnelCardClick(${i})">
+      <div class="funnel-top">
+        <span class="funnel-label">${step.label}</span>
+        <span class="funnel-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${step.icon}</svg></span>
+      </div>
       <div class="funnel-value">${value}</div>
       <div class="funnel-conv" style="color:${sub.color};">${sub.text}</div>
     </div>`;

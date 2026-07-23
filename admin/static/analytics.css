@@ -13,7 +13,10 @@
 .funnel-card:hover { box-shadow: 0 8px 24px rgba(60,56,160,0.12); transform: translateY(-2px); }
 .funnel-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad); }
 .funnel-card.selected { outline: 2px solid var(--dot); }
+.funnel-top { display: flex; align-items: center; justify-content: space-between; }
 .funnel-label { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #8a8f9e; line-height: 13px; min-height: 26px; display: flex; align-items: center; }
+.funnel-icon-box { width: 34px; height: 34px; border-radius: 10px; background: rgba(var(--dot-rgb), 0.1); display: grid; place-items: center; flex-shrink: 0; margin-left: 8px; }
+.funnel-icon-box svg { width: 21px; height: 21px; color: var(--dot); opacity: 0.86; }
 .funnel-value { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: var(--dot); }
 .funnel-conv { font-size: 11px; font-weight: 500; }
 

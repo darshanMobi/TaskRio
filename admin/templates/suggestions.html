@@ -148,14 +148,21 @@ function confStyle(c) {
 function renderKpis() {
   const byKind = suggestions.reduce((a, d) => { a[d.kind] = (a[d.kind] || 0) + 1; return a; }, {});
   const kpis = [
-    { label: 'Total Suggestions', value: suggestions.length,        dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)' },
-    { label: 'Reminders',         value: byKind.reminder || 0,        dot: '#4f46e5', grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)' },
-    { label: 'Task Creates',      value: byKind.task_create || 0,     dot: '#1d9e68', grad: 'linear-gradient(90deg,#1d9e68,#4cc38a)' },
-    { label: 'Priority Updates',  value: byKind.priority_update || 0, dot: '#dd8410', grad: 'linear-gradient(90deg,#dd8410,#f4b04a)' },
+    { label: 'Total Suggestions', value: suggestions.length,        dot: '#4f46e5', dotRgb: '79, 70, 229',   grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)',
+      icon: '<path d="M12 3a6 6 0 0 0-4 10.5c.5.6.9 1.3 1 2.5h6c.1-1.2.5-1.9 1-2.5A6 6 0 0 0 12 3z"/><path d="M9 18h6"/><path d="M10 21h4"/>' },
+    { label: 'Reminders',         value: byKind.reminder || 0,        dot: '#4f46e5', dotRgb: '79, 70, 229',   grad: 'linear-gradient(90deg,#4f46e5,#8b5cf6)',
+      icon: '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>' },
+    { label: 'Task Creates',      value: byKind.task_create || 0,     dot: '#1d9e68', dotRgb: '29, 158, 104', grad: 'linear-gradient(90deg,#1d9e68,#4cc38a)',
+      icon: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>' },
+    { label: 'Priority Updates',  value: byKind.priority_update || 0, dot: '#dd8410', dotRgb: '221, 132, 16', grad: 'linear-gradient(90deg,#dd8410,#f4b04a)',
+      icon: '<circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/>' },
   ];
   document.getElementById('kpi-grid').innerHTML = kpis.map(c => `
-    <div class="stat-card" style="--dot:${c.dot};--grad:${c.grad};">
-      <span class="stat-label">${c.label}</span>
+    <div class="stat-card" style="--dot:${c.dot};--dot-rgb:${c.dotRgb};--grad:${c.grad};">
+      <div class="stat-top">
+        <span class="stat-label">${c.label}</span>
+        <span class="stat-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.icon}</svg></span>
+      </div>
       <div class="stat-value">${c.value}</div>
     </div>`).join('');
 }
