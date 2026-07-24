@@ -78,22 +78,28 @@
   <main class="main">
     <div class="page">
 
-      <div>
-        <a href="/admin/tenants" class="back-link">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Back to Tenants
-        </a>
-      </div>
-
       <header class="page-header">
         <div>
-          <h1 id="tenant-name">Loading…</h1>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <a class="breadcrumb-link" href="/admin/tenants">Tenants</a>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current" id="tenant-name">Loading…</span>
+          </div>
           <div class="detail-meta">
             <span class="id-chip" id="tenant-session-name"></span>
             <span id="tenant-status-badge"></span>
           </div>
         </div>
       </header>
+
+      <div>
+        <a href="/admin/tenants" class="back-link">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to Tenants
+        </a>
+      </div>
 
       <div class="detail-grid">
         <section class="panel">

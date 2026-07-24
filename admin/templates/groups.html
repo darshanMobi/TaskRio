@@ -80,22 +80,28 @@
 
       <header class="page-header">
         <div>
-          <h1>Approved Groups</h1>
-          <p id="subtitle" style="max-width:560px;">Manage which WhatsApp groups can interact with the bot. Unapproved groups that sent messages are shown below.</p>
-        </div>
-        <div class="page-header-actions">
-          <div class="btn-row">
-            <button class="btn btn-primary" onclick="showAddModal()">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-              Add Group
-            </button>
-            <button class="btn btn-secondary" onclick="loadGroups(); loadPendingInvites();">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Refresh
-            </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">Groups</span>
           </div>
+          <p id="subtitle" style="max-width:560px;"></p>
         </div>
+        <div class="live-pill"><span class="live-dot"></span>Live</div>
       </header>
+
+      <div class="page-toolbar">
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="showAddModal()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Add Group
+          </button>
+          <button class="btn btn-secondary" onclick="loadGroups(); loadPendingInvites();">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
 
       <div class="stat-grid">
         <div class="stat-card accent-indigo">

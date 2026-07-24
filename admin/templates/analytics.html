@@ -80,19 +80,23 @@
 
       <header class="page-header">
         <div>
-          <h1>Demo Funnel Analytics</h1>
-          <p>Tutorial completion funnel with user details and activity trends</p>
-        </div>
-        <div class="page-header-actions">
-          <div class="btn-row">
-            <div class="live-pill"><span class="live-dot"></span><span id="load-status">Live</span></div>
-            <button class="btn btn-primary" id="reload-btn">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Reload Charts
-            </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">Demo Funnel</span>
           </div>
         </div>
+        <div class="live-pill"><span class="live-dot"></span><span id="load-status">Live</span></div>
       </header>
+
+      <div class="page-toolbar">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="reload-btn">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reload Charts
+          </button>
+        </div>
+      </div>
 
       <!-- Time range picker -->
       <div class="range-tabs" id="range-tabs">

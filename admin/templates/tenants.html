@@ -80,26 +80,31 @@
 
       <header class="page-header">
         <div>
-          <h1>Tenant Management</h1>
-          <p style="max-width:640px;">Each tenant is a client's dedicated WhatsApp number, run as its own WAHA session. Create the tenant, then provision the session and hand the client the pairing QR.</p>
-        </div>
-        <div class="page-header-actions">
-          <div class="btn-row">
-            <button class="btn btn-primary" onclick="showAddModal()">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-              New Tenant
-            </button>
-            <button class="btn btn-secondary" onclick="loadTenants(this)">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Refresh
-            </button>
-            <button class="btn btn-secondary" onclick="syncAllWebhooks(this)">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5.8 8.2a2.8 2.8 0 004 .3l1.7-1.7a2.8 2.8 0 00-4-4l-1 1M8.2 5.8a2.8 2.8 0 00-4-.3L2.5 7.2a2.8 2.8 0 004 4l1-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Sync webhooks
-            </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">Tenants</span>
           </div>
         </div>
+        <div class="live-pill"><span class="live-dot"></span>Live</div>
       </header>
+
+      <div class="page-toolbar">
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="showAddModal()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            New Tenant
+          </button>
+          <button class="btn btn-secondary" onclick="loadTenants(this)">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+          <button class="btn btn-secondary" onclick="syncAllWebhooks(this)">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5.8 8.2a2.8 2.8 0 004 .3l1.7-1.7a2.8 2.8 0 00-4-4l-1 1M8.2 5.8a2.8 2.8 0 00-4-.3L2.5 7.2a2.8 2.8 0 004 4l1-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Sync webhooks
+          </button>
+        </div>
+      </div>
 
       <div class="stat-grid four-col">
         <div class="stat-card accent-indigo">

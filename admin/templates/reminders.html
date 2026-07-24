@@ -91,29 +91,33 @@
 
       <header class="page-header">
         <div>
-          <h1>Reminders Dashboard</h1>
-          <p>Analytics on reminder delivery and user interactions</p>
-        </div>
-        <div class="page-header-actions">
-          <div class="btn-row">
-            <button class="btn btn-secondary" onclick="window.location.reload()">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Refresh
-            </button>
-            <button class="btn btn-primary" onclick="exportCsv()">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Export CSV
-            </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">Reminders</span>
           </div>
         </div>
+        <div class="live-pill"><span class="live-dot"></span>Live</div>
       </header>
 
-      <!-- Time range tabs (server-rendered period filter) -->
-      <div class="range-tabs">
-        <a class="range-btn{{ ' active' if period == '1d' else '' }}" href="/admin/reminders?period=1d">Last 24 Hours</a>
-        <a class="range-btn{{ ' active' if period == '7d' else '' }}" href="/admin/reminders?period=7d">Last 7 Days</a>
-        <a class="range-btn{{ ' active' if period == '30d' else '' }}" href="/admin/reminders?period=30d">Last 30 Days</a>
-        <a class="range-btn{{ ' active' if period == 'all' else '' }}" href="/admin/reminders?period=all">All Time</a>
+      <!-- Time range tabs (server-rendered period filter) + page actions, same row -->
+      <div class="toolbar-row">
+        <div class="range-tabs">
+          <a class="range-btn{{ ' active' if period == '1d' else '' }}" href="/admin/reminders?period=1d">Last 24 Hours</a>
+          <a class="range-btn{{ ' active' if period == '7d' else '' }}" href="/admin/reminders?period=7d">Last 7 Days</a>
+          <a class="range-btn{{ ' active' if period == '30d' else '' }}" href="/admin/reminders?period=30d">Last 30 Days</a>
+          <a class="range-btn{{ ' active' if period == 'all' else '' }}" href="/admin/reminders?period=all">All Time</a>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="window.location.reload()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="exportCsv()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       <!-- Overview KPIs -->

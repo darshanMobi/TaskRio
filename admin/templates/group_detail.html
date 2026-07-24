@@ -78,23 +78,23 @@
   <main class="main">
     <div class="page">
 
-      <div>
+      <header class="page-header">
+        <div class="breadcrumb">
+          <span class="breadcrumb-company">Demo Company</span>
+          <span class="breadcrumb-sep">/</span>
+          <a class="breadcrumb-link" href="/admin/groups">Groups</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" id="group-name">Loading…</span>
+        </div>
+      </header>
+
+      <div class="detail-toolbar">
         <a href="/admin/groups" class="back-link">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Back to Groups
         </a>
-      </div>
-
-      <header class="page-header">
-        <div>
-          <h1 id="group-name">Loading…</h1>
-          <div class="detail-meta">
-            <span class="id-chip" id="group-id"></span>
-            <span id="status-badge"></span>
-          </div>
-        </div>
         <div class="btn-row" id="action-buttons"></div>
-      </header>
+      </div>
 
       <div class="stat-grid" id="stat-grid">
         <div class="stat-card accent-green">
@@ -237,13 +237,6 @@
         });
     }
 
-    function statusBadge(data) {
-        if (data.status === 'unapproved') return '<span class="badge badge-unapproved">Unapproved</span>';
-        if (data.status === 'rejected') return '<span class="badge badge-rejected">Rejected</span>';
-        if (data.is_active) return '<span class="badge badge-active">Active</span>';
-        return '<span class="badge badge-inactive">Inactive</span>';
-    }
-
     async function loadGroupDetails() {
         try {
             const response = await fetch(`/admin/group-detail/${encodeURIComponent(groupId)}`);
@@ -253,8 +246,6 @@
 
             document.title = `${data.group_name || 'Unknown Group'} — Group Detail`;
             document.getElementById('group-name').textContent = data.group_name || 'Unknown Group';
-            document.getElementById('group-id').textContent = groupId;
-            document.getElementById('status-badge').innerHTML = statusBadge(data);
 
             document.getElementById('message-count').textContent = data.message_count;
             document.getElementById('last-activity').textContent = formatDate(data.last_activity);

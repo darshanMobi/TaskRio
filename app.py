@@ -27,6 +27,17 @@ app = FastAPI(title="TaskRio admin/tenant preview (stub)")
 templates = Jinja2Templates(directory="admin/templates")
 app.mount("/admin/static", StaticFiles(directory="admin/static"), name="admin_static")
 
+
+@app.middleware("http")
+async def no_cache_static(request: Request, call_next):
+    """Preview stub only: static CSS/JS is edited constantly during template
+    work, so tell browsers to always revalidate instead of serving a stale
+    cached copy after a change."""
+    response = await call_next(request)
+    if request.url.path.startswith("/admin/static"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
 # The tenant portal preview always "logs in" as this one tenant.
 CURRENT_TENANT_ID = next(t["id"] for t in md.TENANTS.values() if t["name"] == "Acme Corp")
 

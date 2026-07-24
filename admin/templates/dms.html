@@ -79,22 +79,28 @@
 
       <header class="page-header">
         <div>
-          <h1>DM Conversations</h1>
-          <p id="subtitle">All direct message conversations with the bot</p>
-        </div>
-        <div class="page-header-actions">
-          <div class="btn-row">
-            <button class="btn btn-secondary" onclick="loadDMs()">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Refresh
-            </button>
-            <button class="btn btn-primary" onclick="exportCsv()">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Export CSV
-            </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-company">Demo Company</span>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">DMs</span>
           </div>
+          <p id="subtitle"></p>
         </div>
+        <div class="live-pill"><span class="live-dot"></span>Live</div>
       </header>
+
+      <div class="page-toolbar">
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="loadDMs()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="exportCsv()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
 
       <div class="stat-grid four-col" id="kpi-grid">
         <div class="stat-card accent-indigo">

@@ -118,9 +118,31 @@ a:hover { color: #4338ca; }
     var(--bg);
 }
 .page { padding: 28px clamp(20px, 3vw, 56px) 40px; display: flex; flex-direction: column; gap: 22px; }
-.page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* Sticky breadcrumb header — pinned to the top of the viewport on every admin
+   page in place of the old plain title, so the "Company / Section" trail
+   stays visible while the page content scrolls underneath it. */
+.page-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 5;
+  margin: -28px calc(-1 * clamp(20px, 3vw, 56px)) 0;
+  padding: 18px clamp(20px, 3vw, 56px) 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
 .page-header h1 { margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
 .page-header p { margin: 4px 0 0; font-size: 13.5px; color: var(--muted); }
+
+.breadcrumb { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.breadcrumb-company { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 500; color: var(--muted); }
+.breadcrumb-sep { font-size: 15px; color: var(--faint); }
+.breadcrumb-current { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.breadcrumb-link { color: var(--muted); font-weight: 500; }
+.breadcrumb-link:hover { color: var(--ink); }
+
+/* Page toolbar — action buttons moved out of the sticky header, sitting just
+   above the page content instead so they scroll away with it. */
+.page-toolbar { display: flex; justify-content: flex-end; }
 .live-pill { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); background: var(--card); border: 1px solid var(--border); border-radius: 9px; padding: 8px 13px; }
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #22a06b; }
 
