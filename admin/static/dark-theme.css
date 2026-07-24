@@ -1,0 +1,167 @@
+/* TaskRio Admin — shared dark theme palette.
+   Entirely scoped behind :root[data-theme="dark"], so pages that don't
+   link this file (or don't set the attribute) are completely unaffected.
+   Link this on any page alongside admin.css to enable dark mode there. */
+
+:root[data-theme="dark"] {
+  --bg: #0d0f14;
+  --card: #171a22;
+  --border: #262b38;
+  --ink: #e8eaf0;
+  --muted: #9299ab;
+  --faint: #757c8f;
+  --axis: #6b7185;
+  --chip-bg: #1f232e;
+  --chip-ink: #b4bac9;
+  --grid-line: #262b38;
+
+  --indigo: #7c7ff2;
+  --indigo-tint: #232355;
+  --indigo-rgb: 124, 127, 242;
+  --violet: #b09bfb;
+  --violet-lt: #c4b5fd;
+  --violet-tint: #2a2350;
+  --violet-rgb: 176, 155, 251;
+  --green: #34d399;
+  --green-tint: #123024;
+  --green-rgb: 52, 211, 153;
+  --amber: #fbbf24;
+  --amber-tint: #332608;
+  --amber-rgb: 251, 191, 36;
+  --teal: #2dd4e8;
+  --teal-tint: #0f2f34;
+  --teal-rgb: 45, 212, 232;
+
+  --brand-purple: #8a7bff;
+  --brand-purple-light: #b3a6ff;
+  --sidebar-bg: #12141c;
+  --sidebar-border: #232733;
+  --sidebar-text: #9299ab;
+  --sidebar-text-hover: #f0f1f5;
+  --sidebar-hover-bg: #1c2029;
+  --sidebar-active-bg: #201f3a;
+  --sidebar-active-text: var(--brand-purple-light);
+  --sidebar-focus-ring: rgba(138, 123, 255, 0.4);
+}
+
+:root[data-theme="dark"] .main {
+  background:
+    radial-gradient(900px 380px at 12% -8%, rgba(124,127,242,0.14), transparent 60%),
+    radial-gradient(800px 340px at 88% -6%, rgba(196,181,253,0.10), transparent 55%),
+    radial-gradient(700px 400px at 55% 115%, rgba(52,211,153,0.06), transparent 60%),
+    var(--bg);
+}
+
+:root[data-theme="dark"] .kpi-card,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .chart-card,
+:root[data-theme="dark"] .panel {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+:root[data-theme="dark"] .kpi-card:hover,
+:root[data-theme="dark"] .stat-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+:root[data-theme="dark"] .sidebar {
+  box-shadow: 4px 0 24px -14px rgba(0,0,0,0.6);
+}
+:root[data-theme="dark"] .brand-logo-light { display: none; }
+:root[data-theme="dark"] .brand-logo-dark { display: block; }
+
+:root[data-theme="dark"] .accent-indigo { --grad: linear-gradient(90deg, #7c7ff2, #b09bfb); }
+:root[data-theme="dark"] .accent-green  { --grad: linear-gradient(90deg, #1fae7a, #34d399); }
+:root[data-theme="dark"] .accent-violet { --grad: linear-gradient(90deg, #b09bfb, #d8cbfe); }
+:root[data-theme="dark"] .accent-amber  { --grad: linear-gradient(90deg, #d99b1f, #fbbf24); }
+:root[data-theme="dark"] .accent-teal   { --grad: linear-gradient(90deg, #17a7ba, #2dd4e8); }
+
+:root[data-theme="dark"] .bars { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .nav-item.logout:hover { background: #3a1f22; color: #f28b8b; }
+
+/* Scrollbars — default light/OS scrollbars read as broken against dark surfaces
+   (sticky-scroll tables, message threads, the mobile sidebar, textareas), so
+   restyle them everywhere under dark theme rather than per-container. */
+:root[data-theme="dark"] { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+:root[data-theme="dark"] ::-webkit-scrollbar { width: 10px; height: 10px; }
+:root[data-theme="dark"] ::-webkit-scrollbar-track { background: transparent; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb { background-color: var(--border); border-radius: 8px; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background-color: var(--faint); }
+
+/* Generic light-hardcoded surfaces reused across page-specific stylesheets */
+:root[data-theme="dark"] .panel-head,
+:root[data-theme="dark"] .modal-head,
+:root[data-theme="dark"] .modal-foot { border-color: var(--border); }
+:root[data-theme="dark"] .panel-foot,
+:root[data-theme="dark"] .modal-foot { background: var(--card); border-color: var(--border); }
+:root[data-theme="dark"] .table th { background: var(--card); border-bottom-color: var(--border); }
+:root[data-theme="dark"] .table td { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .table tbody tr:hover { background: var(--chip-bg); }
+:root[data-theme="dark"] .modal { background: var(--card); box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
+:root[data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.65); }
+
+:root[data-theme="dark"] .btn-secondary,
+:root[data-theme="dark"] .btn-neutral,
+:root[data-theme="dark"] .btn-reject,
+:root[data-theme="dark"] .btn-icon,
+:root[data-theme="dark"] .select,
+:root[data-theme="dark"] .page-btn {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--border);
+}
+:root[data-theme="dark"] .btn-secondary:hover,
+:root[data-theme="dark"] .btn-neutral:hover,
+:root[data-theme="dark"] .page-btn:hover:not(.disabled):not(.current) { background: var(--chip-bg); }
+:root[data-theme="dark"] .btn-reject { color: #f28b8b; border-color: #4a2226; }
+:root[data-theme="dark"] .btn-reject:hover { background: #241417; }
+:root[data-theme="dark"] .btn-icon { color: #f28b8b; border-color: #4a2226; }
+:root[data-theme="dark"] .btn-icon:hover { background: #241417; }
+:root[data-theme="dark"] .page-btn.disabled { color: var(--faint); background: var(--card); }
+:root[data-theme="dark"] .page-btn.current { color: #fff; }
+
+:root[data-theme="dark"] .badge-rejected,
+:root[data-theme="dark"] .badge-disconnected,
+:root[data-theme="dark"] .badge-suspended { color: #f28b8b; background: #331519; }
+
+:root[data-theme="dark"] .form-input { background: var(--card); color: var(--ink); border-color: var(--border); }
+:root[data-theme="dark"] .form-label { color: var(--ink); }
+:root[data-theme="dark"] .id-chip { color: var(--ink); }
+
+:root[data-theme="dark"] .accent-gray { --grad: linear-gradient(90deg, #8a8f9e, #b6bac4); }
+:root[data-theme="dark"] .accent-red  { --grad: linear-gradient(90deg, #e05a5a, #f28b8b); }
+
+/* Shared "danger" text token — never defined in admin.css (light mode uses the
+   literal #c93b3b directly), so cssVar('--red', '#c93b3b') in JS falls back
+   correctly in light mode and only picks this up in dark mode. */
+:root[data-theme="dark"] { --red: #f28b8b; }
+
+/* Demo Funnel Analytics page */
+:root[data-theme="dark"] .range-tabs { background: var(--card); border-color: var(--border); }
+:root[data-theme="dark"] .range-btn { color: var(--chip-ink); }
+:root[data-theme="dark"] .range-btn:hover { background: var(--chip-bg); }
+:root[data-theme="dark"] .funnel-card { background: var(--card); border-color: var(--border); }
+:root[data-theme="dark"] .funnel-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+:root[data-theme="dark"] .funnel-label { color: var(--faint); }
+:root[data-theme="dark"] .timestamp { color: var(--chip-ink); }
+:root[data-theme="dark"] .no-data-cell { color: var(--faint); }
+
+/* Reminders Dashboard page */
+:root[data-theme="dark"] .stat-sub { color: var(--faint); }
+
+/* Group Detail page */
+:root[data-theme="dark"] .badge-blocked { color: #f28b8b; background: #331519; }
+:root[data-theme="dark"] .btn-danger { color: #f28b8b; background: var(--card); border-color: #4a2226; }
+:root[data-theme="dark"] .btn-danger:hover { background: #241417; }
+:root[data-theme="dark"] .error-banner { background: #331519; color: #f28b8b; }
+:root[data-theme="dark"] .member-row { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .message-row { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .message-row-text { color: var(--ink); }
+
+/* Tenant Detail page */
+:root[data-theme="dark"] .info-row { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .webhook-textarea { background: var(--card); color: var(--ink); border-color: var(--border); }
+:root[data-theme="dark"] .add-row { border-top-color: var(--border); }
+
+/* DM Detail page */
+:root[data-theme="dark"] .message-input { background: var(--card); color: var(--ink); border-color: var(--border); }
+:root[data-theme="dark"] .message.inbound .message-bubble { background: var(--card); }
+:root[data-theme="dark"] .message.inbound .message-text { color: var(--ink); }

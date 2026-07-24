@@ -4,10 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reminders - TaskRio Admin</title>
+<script>
+(function () {
+  var saved = localStorage.getItem('taskrio-theme');
+  var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/admin/static/admin.css">
 <link rel="stylesheet" href="/admin/static/reminders.css">
+<link rel="stylesheet" href="/admin/static/dark-theme.css">
+<link rel="stylesheet" href="/admin/static/theme-toggle.css">
 </head>
 <body>
 {% set responded_count = (stats.total_reminders * stats.response_rate / 100) | round | int %}
@@ -26,7 +35,8 @@
   <aside class="sidebar">
     <div class="brand">
       <a class="brand-logo-link" href="/admin" aria-label="Go to Dashboard">
-        <img class="brand-logo" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+        <img class="brand-logo brand-logo-light" src="/admin/static/logo.png" alt="MobiOfficeHQ TaskRio">
+        <img class="brand-logo brand-logo-dark" src="/admin/static/logo-dark.png" alt="MobiOfficeHQ TaskRio">
       </a>
     </div>
 
@@ -62,6 +72,13 @@
     </nav>
 
     <div class="sidebar-footer">
+      <button type="button" class="nav-item theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="icon-sun">Light Mode</span>
+        <span class="icon-moon">Dark Mode</span>
+      </button>
+      <hr class="theme-toggle-divider">
       <a class="nav-item logout" href="/admin/logout">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10.5 5.5V3.6c0-.9-.7-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v8.8c0 .9.7 1.6 1.6 1.6h4.8c.9 0 1.6-.7 1.6-1.6v-1.9M7 8h7m0 0l-2.2-2.2M14 8l-2.2 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Logout
@@ -77,15 +94,17 @@
           <h1>Reminders Dashboard</h1>
           <p>Analytics on reminder delivery and user interactions</p>
         </div>
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="window.location.reload()">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Refresh
-          </button>
-          <button class="btn btn-primary" onclick="exportCsv()">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Export CSV
-          </button>
+        <div class="page-header-actions">
+          <div class="btn-row">
+            <button class="btn btn-secondary" onclick="window.location.reload()">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 112.8 4.3M2.8 4.3V1.8m0 2.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Refresh
+            </button>
+            <button class="btn btn-primary" onclick="exportCsv()">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10l2-5 3 4 2-2 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Export CSV
+            </button>
+          </div>
         </div>
       </header>
 
@@ -147,11 +166,11 @@
       <section class="panel" style="padding:20px 22px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px;">
           <h2 class="panel-title">Reminders Over Time</h2>
-          <div style="display:flex;gap:14px;font-size:12px;color:#565c6b;">
-            <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:#4f46e5;"></span>Sent</span>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--chip-ink);">
+            <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:var(--indigo);"></span>Sent</span>
           </div>
         </div>
-        <p style="margin:2px 0 14px;font-size:12px;color:#8a8f9e;">{{ 'Hourly Distribution' if period == '1d' else 'Daily Distribution' }}</p>
+        <p style="margin:2px 0 14px;font-size:12px;color:var(--faint);">{{ 'Hourly Distribution' if period == '1d' else 'Daily Distribution' }}</p>
         <svg viewBox="0 0 760 200" style="width:100%;height:auto;display:block;" id="reminders-chart"></svg>
       </section>
 
@@ -212,6 +231,11 @@
 const chartData = {{ chart_data | tojson }};
 const newUsersRaw = {{ new_users_json | tojson }};
 
+function cssVar(name, fallback) {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v || fallback;
+}
+
 function niceMax(values) {
   const max = Math.max(1, ...values);
   const step = Math.pow(10, Math.floor(Math.log10(max)));
@@ -253,30 +277,34 @@ function renderChart() {
     labelsSvg += `<text x="${x(idx)}" y="${H - 4}">${labels[idx]}</text>`;
   }
 
+  const gridLine = cssVar('--grid-line', '#eef0f4');
+  const axisColor = cssVar('--axis', '#9aa0ae');
+  const indigo = cssVar('--indigo', '#4f46e5');
+
   svg.innerHTML = `
     <defs>
       <linearGradient id="rem-area" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#4f46e5" stop-opacity="0.18"/><stop offset="1" stop-color="#4f46e5" stop-opacity="0"/>
+        <stop offset="0" stop-color="${indigo}" stop-opacity="0.18"/><stop offset="1" stop-color="${indigo}" stop-opacity="0"/>
       </linearGradient>
     </defs>
-    <g stroke="#eef0f4" stroke-width="1">${gridSvg}</g>
-    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="end">${axisSvg}</g>
+    <g stroke="${gridLine}" stroke-width="1">${gridSvg}</g>
+    <g font-size="10" fill="${axisColor}" font-family="IBM Plex Sans" text-anchor="end">${axisSvg}</g>
     <path d="${areaPath}" fill="url(#rem-area)"/>
-    <polyline points="${pts}" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    <g fill="#4f46e5">${dots}</g>
-    <g font-size="10" fill="#9aa0ae" font-family="IBM Plex Sans" text-anchor="middle">${labelsSvg}</g>
+    <polyline points="${pts}" fill="none" stroke="${indigo}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <g fill="${indigo}">${dots}</g>
+    <g font-size="10" fill="${axisColor}" font-family="IBM Plex Sans" text-anchor="middle">${labelsSvg}</g>
   `;
 }
 renderChart();
 
 function userIdCell(id, name) {
   return `<td style="padding:12px 18px;">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:#4f46e5;cursor:pointer;" onclick="openDm('${id}')">${id}</div>
-    ${name ? `<div style="font-size:11px;color:#8a8f9e;margin-top:2px;">${name}</div>` : ''}
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:${cssVar('--indigo', '#4f46e5')};cursor:pointer;" onclick="openDm('${id}')">${id}</div>
+    ${name ? `<div style="font-size:11px;color:${cssVar('--faint', '#8a8f9e')};margin-top:2px;">${name}</div>` : ''}
   </td>`;
 }
-function reminderChip(n) { return `<span style="font-size:12px;font-weight:600;color:#4f46e5;background:#eceafd;border-radius:20px;padding:3px 10px;white-space:nowrap;">${n} reminders</span>`; }
-function taskChip(n)     { return `<span style="font-size:12px;font-weight:600;color:#1d9e68;background:#e3f5ec;border-radius:20px;padding:3px 10px;white-space:nowrap;">${n} tasks</span>`; }
+function reminderChip(n) { return `<span style="font-size:12px;font-weight:600;color:${cssVar('--indigo', '#4f46e5')};background:${cssVar('--indigo-tint', '#eceafd')};border-radius:20px;padding:3px 10px;white-space:nowrap;">${n} reminders</span>`; }
+function taskChip(n)     { return `<span style="font-size:12px;font-weight:600;color:${cssVar('--green', '#1d9e68')};background:${cssVar('--green-tint', '#e3f5ec')};border-radius:20px;padding:3px 10px;white-space:nowrap;">${n} tasks</span>`; }
 function openDm(userId) { window.location.href = `/admin/dm/${encodeURIComponent(userId)}`; }
 
 const newTbody  = document.getElementById('new-users-tbody');
@@ -298,10 +326,11 @@ function renderNew() {
     case 'tasks':      rows.sort((a, b) => b.tasks_with_reminders - a.tasks_with_reminders); break;
     default:           rows.sort((a, b) => new Date(b.first_reminder_at) - new Date(a.first_reminder_at));
   }
+  const timeColor = cssVar('--chip-ink', '#565c6b');
   newTbody.innerHTML = rows.map(d => `
     <tr>
       ${userIdCell(d.user_id, d.display_name || '')}
-      <td style="padding:12px 14px;color:#565c6b;font-size:12.5px;white-space:nowrap;">${d.first_reminder_at}</td>
+      <td style="padding:12px 14px;color:${timeColor};font-size:12.5px;white-space:nowrap;">${d.first_reminder_at}</td>
       <td style="padding:12px 14px;">${reminderChip(d.total_reminders_sent)}</td>
       <td style="padding:12px 18px;">${taskChip(d.tasks_with_reminders)}</td>
     </tr>`).join('');
@@ -326,6 +355,24 @@ function exportCsv() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+const themeToggle = document.getElementById('themeToggle');
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+}
+setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+themeToggle.addEventListener('click', function () {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('taskrio-theme', next);
+  setTheme(next);
+  renderChart();
+  renderNew();
+});
 </script>
 </body>
 </html>
